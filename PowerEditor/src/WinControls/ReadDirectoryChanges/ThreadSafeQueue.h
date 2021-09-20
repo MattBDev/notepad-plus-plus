@@ -79,6 +79,6 @@ public:
 	HANDLE GetWaitHandle() { return m_hEvent; }
 
 protected:
-	HANDLE m_hEvent = nullptr;
+	HANDLE m_hEvent;
 	std::mutex m_mutex;
 };

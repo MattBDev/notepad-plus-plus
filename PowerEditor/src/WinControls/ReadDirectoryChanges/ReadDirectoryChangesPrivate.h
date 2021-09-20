@@ -75,12 +75,12 @@ protected:
 			LPOVERLAPPED lpOverlapped);					// I/O information buffer
 
 	// Parameters from the caller for ReadDirectoryChangesW().
-	DWORD m_dwFilterFlags = 0;
-	BOOL m_bIncludeChildren = FALSE;
+	DWORD m_dwFilterFlags;
+	BOOL m_bIncludeChildren;
 	std::wstring m_wstrDirectory;
 
 	// Result of calling CreateFile().
-	HANDLE		m_hDirectory = nullptr;
+	HANDLE		m_hDirectory;
 
 	// Required parameter for ReadDirectoryChangesW().
 	OVERLAPPED	m_Overlapped;
@@ -130,7 +130,7 @@ public:
 		pRequest->m_pServer->AddDirectory(pRequest);
 	}
 
-	CReadDirectoryChanges* m_pBase = nullptr;
+	CReadDirectoryChanges* m_pBase;
 
 	volatile DWORD m_nOutstandingRequests;
 
@@ -171,7 +171,7 @@ protected:
 
 	vector<CReadChangesRequest*> m_pBlocks;
 
-	bool m_bTerminate = false;
+	bool m_bTerminate;
 };
 
 }

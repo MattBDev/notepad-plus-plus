@@ -172,55 +172,55 @@ protected :
 
 private:
 	// handles
-	BOOL _isActive = FALSE;
-	bool _isFloating = FALSE;
-	HWND _hCaption = nullptr;
-	HWND _hContTab = nullptr;
+	BOOL					_isActive;
+	bool					_isFloating;
+	HWND					_hCaption;
+	HWND					_hContTab;
 
 	// horizontal font for caption and tab
-	HFONT _hFont = nullptr;
+	HFONT					_hFont;
 
 	// caption params
-	BOOL _isTopCaption = FALSE;
-	generic_string _pszCaption;
+	BOOL					_isTopCaption;
+	generic_string		    _pszCaption;
 
-	BOOL _isMouseDown = FALSE;
-	BOOL _isMouseClose = FALSE;
-	BOOL _isMouseOver = FALSE;
-	RECT _rcCaption = {0};
+	BOOL					_isMouseDown;
+	BOOL					_isMouseClose;
+	BOOL					_isMouseOver;
+	RECT					_rcCaption;
 	
 	// tab style
-	BOOL _bDrawOgLine = FALSE;
+	BOOL					_bDrawOgLine;
 
 	// Important value for DlgMoving class
-	BOOL _dragFromTab = FALSE;
+	BOOL					_dragFromTab;
 
 	// subclassing handle for caption
-	WNDPROC _hDefaultCaptionProc = nullptr;
+	WNDPROC					_hDefaultCaptionProc;
 
 	// subclassing handle for tab
-	WNDPROC _hDefaultTabProc = nullptr;
+	WNDPROC					_hDefaultTabProc;
 
 	// for moving and reordering
-	UINT _prevItem = 0;
-	BOOL _beginDrag = FALSE;
+	UINT					_prevItem;
+	BOOL					_beginDrag;
 
 	// Is tooltip
-	BOOL _bTabTTHover = FALSE;
-	INT _iLastHovered = 0;
+	BOOL					_bTabTTHover;
+	INT						_iLastHovered;
 
-	BOOL _bCaptionTT = FALSE;
-	BOOL _bCapTTHover = FALSE;
-	eMousePos _hoverMPos = posOutside;
+	BOOL					_bCaptionTT;
+	BOOL					_bCapTTHover;
+	eMousePos				_hoverMPos;
 
 	int _captionHeightDynamic = HIGH_CAPTION;
 	int _captionGapDynamic = CAPTION_GAP;
 	int _closeButtonPosLeftDynamic = CLOSEBTN_POS_LEFT;
 	int _closeButtonPosTopDynamic = CLOSEBTN_POS_TOP;
-	int _closeButtonWidth = 12;
-	int _closeButtonHeight = 12;
+	int _closeButtonWidth;
+	int _closeButtonHeight;
 
 	// data of added windows
-	std::vector<tTbData *> _vTbData;
+	std::vector<tTbData *>		_vTbData;
 };
 

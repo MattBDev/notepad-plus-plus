@@ -97,8 +97,8 @@
 #define BGM_SETHILIGHTCOLOR_PROTECT_NOFOCUS BABYGRID_USER + 50
 
   struct _BGCELL {
-         int row = 0;
-         int col = 0;
+         int row;
+         int col;
     };
 
 

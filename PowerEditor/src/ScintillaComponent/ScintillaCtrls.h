@@ -38,7 +38,6 @@ private:
 	std::vector<ScintillaEditView *> _scintVector;
 	HINSTANCE _hInst = nullptr;
 	HWND _hParent = nullptr;
-
 	int getIndexFrom(HWND handle2Find);
 };
 

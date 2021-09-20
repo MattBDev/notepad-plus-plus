@@ -389,11 +389,11 @@ private:
 
 	//document properties
 	Document _doc;	//invariable
-	LangType _lang = L_TEXT;
+	LangType _lang;
 	generic_string _userLangExt; // it's useful if only (_lang == L_USER)
 	bool _isDirty = false;
 	EolType _eolFormat = EolType::osdefault;
-	UniMode _unicodeMode = uniUTF8;
+	UniMode _unicodeMode;
 	int _encoding = -1;
 	bool _isUserReadOnly = false;
 	bool _needLexer = false; // new buffers do not need lexing, Scintilla takes care of that
@@ -404,7 +404,7 @@ private:
 	std::vector<std::vector<size_t>> _foldStates;
 
 	//Environment properties
-	DocFileStatus _currentStatus = DOC_REGULAR;
+	DocFileStatus _currentStatus;
 	FILETIME _timeStamp = {}; // 0 if it's a new doc
 
 	bool _isFileReadOnly = false;

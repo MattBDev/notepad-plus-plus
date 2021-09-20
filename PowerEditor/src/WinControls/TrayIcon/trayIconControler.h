@@ -34,7 +34,7 @@ public:
   bool isInTray() const {return _isIconShowed;};
 
 private:
-  NOTIFYICONDATA _nid;
-  bool _isIconShowed = false;
+  NOTIFYICONDATA    _nid;
+  bool              _isIconShowed;
 };
 

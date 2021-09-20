@@ -29,18 +29,19 @@ class ScintillaEditView;
 
 class ByteArray {
 public:
-	ByteArray() = default;
+	ByteArray():_pBytes(NULL), _length(0) {};
 	explicit ByteArray(ClipboardData cd);
 	
 	~ByteArray() {
-		if (_pBytes)
-			delete [] _pBytes;
+		delete [] _pBytes;
+		_pBytes = NULL;
+		_length = 0;
 	};
 	const unsigned char * getPointer() const {return _pBytes;};
 	size_t getLength() const {return _length;};
 protected:
-	unsigned char *_pBytes = nullptr;
-	size_t _length = 0;
+	unsigned char *_pBytes;
+	size_t _length;
 };
 
 class StringArray : public ByteArray {
@@ -78,11 +79,11 @@ protected:
 	virtual INT_PTR CALLBACK run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
-	ScintillaEditView **_ppEditView = nullptr;
+	ScintillaEditView **_ppEditView;
 	std::vector<ClipboardData> _clipboardDataVector;
-	HWND _hwndNextCbViewer = nullptr;
-	int _lbBgColor = -1;
-	int _lbFgColor= -1;
+	HWND _hwndNextCbViewer;
+	int _lbBgColor;
+	int _lbFgColor;
 
 };
 
