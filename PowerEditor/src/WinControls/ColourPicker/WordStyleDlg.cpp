@@ -119,14 +119,14 @@ INT_PTR CALLBACK WordStyleDlg::run_dlgProc(UINT Message, WPARAM wParam, LPARAM l
 			}
 			::SendMessage(_hSwitch2ThemeCombo, CB_SETCURSEL, _currentThemeIndex, 0);
 
-			for (int i = 0 ; i < sizeof(fontSizeStrs)/(3*sizeof(TCHAR)) ; ++i)
-				::SendMessage(_hFontSizeCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(fontSizeStrs[i]));
+			for (auto fontSizeStr : fontSizeStrs)
+				::SendMessage(_hFontSizeCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(fontSizeStr));
 
 			const std::vector<generic_string> & fontlist = (NppParameters::getInstance()).getFontList();
-			for (size_t i = 0, len = fontlist.size() ; i < len ; ++i)
+			for (const auto & i : fontlist)
 			{
-				auto j = ::SendMessage(_hFontNameCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(fontlist[i].c_str()));
-				::SendMessage(_hFontNameCombo, CB_SETITEMDATA, j, reinterpret_cast<LPARAM>(fontlist[i].c_str()));
+				auto j = ::SendMessage(_hFontNameCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(i.c_str()));
+				::SendMessage(_hFontNameCombo, CB_SETITEMDATA, j, reinterpret_cast<LPARAM>(i.c_str()));
 			}
 
 			_pFgColour = new ColourPicker;
@@ -990,7 +990,7 @@ void WordStyleDlg::create(int dialogID, bool isRTL, bool msgDestParent)
 
 		::SendDlgItemMessage(_hSelf, IDC_SC_PERCENTAGE_SLIDER, TBM_SETRANGE, FALSE, MAKELONG(20, 200));
 		::SendDlgItemMessage(_hSelf, IDC_SC_PERCENTAGE_SLIDER, TBM_SETPOS, TRUE, 150);
-		if (!(BST_CHECKED == ::SendDlgItemMessage(_hSelf, IDC_SC_PERCENTAGE_SLIDER, BM_GETCHECK, 0, 0)))
+		if (BST_CHECKED != ::SendDlgItemMessage(_hSelf, IDC_SC_PERCENTAGE_SLIDER, BM_GETCHECK, 0, 0))
 			::EnableWindow(::GetDlgItem(_hSelf, IDC_SC_PERCENTAGE_SLIDER), FALSE);
 	}
 }

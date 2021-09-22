@@ -15,6 +15,25 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 #include "Notepad_plus.h"
+#include <unknwn.h> // To enable support for non-WinRT interfaces, unknwn.h must be included before any C++/WinRT headers.
+#include <stdlib.h>
+#include <string.h>
+
+#include <ctime>
+#include <Shlwapi.h>
+#include <windows.ui.xaml.hosting.desktopwindowxamlsource.h>
+#include <winrt/windows.foundation.collections.h>
+#include <winrt/windows.system.h>
+#include <winrt/windows.ui.xaml.controls.h>
+#include <winrt/windows.ui.xaml.hosting.h>
+#include <winrt/Windows.ui.xaml.media.h>
+
+using namespace winrt;
+using namespace Windows::UI;
+using namespace Windows::UI::Composition;
+using namespace Windows::UI::Xaml::Hosting;
+using namespace Windows::Foundation::Numerics;
+
 
 const int splitterSize = 8;
 

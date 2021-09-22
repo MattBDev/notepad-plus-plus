@@ -2908,10 +2908,8 @@ bool removeUnwantedTrailingCharFromUrl (TCHAR const *text, int* length)
 					if (text [j] == closingParenthesis [i])
 						count++;
 					if (text [j] == openingParenthesis [i])
-						if (count > 0)
-							count--;
-						else
-							return false;
+						if (count > 0) { count--; }
+						else { return false; }
 				}
 				if (count != 0)
 					return false;
@@ -3300,7 +3298,7 @@ void Notepad_plus::setLanguage(LangType langType)
 		_subEditView.execute(SCI_SETDOCPOINTER, 0, prev);
 		_subEditView.restoreCurrentPosPreStep();
 	}
-};
+}
 
 LangType Notepad_plus::menuID2LangType(int cmdID)
 {
@@ -5834,7 +5832,7 @@ void Notepad_plus::notifyBufferChanged(Buffer * buffer, int mask)
 {
 	// To avoid to crash while MS-DOS style is set as default language,
 	// Checking the validity of current instance is necessary.
-	if (!this) return;
+	if (!this){ return; }
 
 	NppParameters& nppParam = NppParameters::getInstance();
 	const NppGUI & nppGUI = nppParam.getNppGUI();

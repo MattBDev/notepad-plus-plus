@@ -111,7 +111,6 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 					break;
 			}
 		}
-
 		case WM_DESTROY :
 		{
 			return TRUE;

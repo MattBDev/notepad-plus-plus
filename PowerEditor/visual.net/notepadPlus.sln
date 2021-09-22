@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.852
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Notepad++", "notepadPlus.vcxproj", "{FCF60E65-1B78-4D1D-AB59-4FC00AC8C248}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Notepad++", "notepadPlus.vc
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "..\..\scintilla\win32\SciLexer.vcxproj", "{FBE04237-9C7B-4973-9C60-505975998B39}"
+EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Packaging", "..\Packaging\Packaging.wapproj", "{80ADE069-DE83-415F-BB65-2215400F0649}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,24 @@ Global
 		{FBE04237-9C7B-4973-9C60-505975998B39}.Release|Win32.Build.0 = Release|Win32
 		{FBE04237-9C7B-4973-9C60-505975998B39}.Release|x64.ActiveCfg = Release|x64
 		{FBE04237-9C7B-4973-9C60-505975998B39}.Release|x64.Build.0 = Release|x64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|ARM64.Build.0 = Debug|ARM64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|Win32.ActiveCfg = Debug|x86
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|Win32.Build.0 = Debug|x86
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|Win32.Deploy.0 = Debug|x86
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|x64.ActiveCfg = Debug|x64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|x64.Build.0 = Debug|x64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Debug|x64.Deploy.0 = Debug|x64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|ARM64.ActiveCfg = Release|ARM64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|ARM64.Build.0 = Release|ARM64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|ARM64.Deploy.0 = Release|ARM64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|Win32.ActiveCfg = Release|x86
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|Win32.Build.0 = Release|x86
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|Win32.Deploy.0 = Release|x86
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|x64.ActiveCfg = Release|x64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|x64.Build.0 = Release|x64
+		{80ADE069-DE83-415F-BB65-2215400F0649}.Release|x64.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

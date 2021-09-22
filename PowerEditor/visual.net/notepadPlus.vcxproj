@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.props" Condition="Exists('packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.props')" />
+  <Import Project="packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|ARM64">
       <Configuration>Debug</Configuration>
@@ -31,40 +33,40 @@
     <ProjectGuid>{FCF60E65-1B78-4D1D-AB59-4FC00AC8C248}</ProjectGuid>
     <RootNamespace>Notepad++</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -107,6 +109,11 @@
     <OutDir>x64\$(Configuration)\</OutDir>
     <IntDir>x64\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <ClangTidyChecks>
+    </ClangTidyChecks>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <LinkIncremental>false</LinkIncremental>
@@ -130,7 +137,7 @@
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\src\WinControls\AboutDlg;..\..\scintilla\include;..\include;..\src\WinControls;..\src\WinControls\ImageListSet;..\src\WinControls\OpenSaveFileDialog;..\src\WinControls\SplitterContainer;..\src\WinControls\StaticDialog;..\src\WinControls\TabBar;..\src\WinControls\ToolBar;..\src\MISC\Process;..\src\ScintillaComponent;..\src\MISC;..\src\MISC\SysMsg;..\src\WinControls\StatusBar;..\src;..\src\WinControls\StaticDialog\RunDlg;..\src\tinyxml;..\src\WinControls\ColourPicker;..\src\Win32Explr;..\src\MISC\RegExt;..\src\WinControls\TrayIcon;..\src\WinControls\shortcut;..\src\WinControls\Grid;..\src\WinControls\ContextMenu;..\src\MISC\PluginsManager;..\src\WinControls\Preference;..\src\WinControls\WindowsDlg;..\src\WinControls\TaskList;..\src\WinControls\DockingWnd;..\src\WinControls\TreeView;..\src\WinControls\ToolTip;..\src\MISC\Exception;..\src\MISC\Common;..\src\tinyxml\tinyXmlA;..\src\WinControls\AnsiCharPanel;..\src\WinControls\ClipboardHistory;..\src\WinControls\FindCharsInRange;..\src\WinControls\VerticalFileSwitcher;..\src\WinControls\ProjectPanel;..\src\WinControls\DocumentMap;..\src\WinControls\FunctionList;..\src\uchardet;..\src\WinControls\FileBrowser;..\src\WinControls\ReadDirectoryChanges;..\src\MISC\md5;..\src\WinControls\PluginsAdmin;..\src\json;..\src\MISC\sha2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0600;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0A00;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>UninitializedLocalUsageCheck</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -170,18 +177,19 @@
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\src\WinControls\AboutDlg;..\..\scintilla\include;..\include;..\src\WinControls;..\src\WinControls\ImageListSet;..\src\WinControls\OpenSaveFileDialog;..\src\WinControls\SplitterContainer;..\src\WinControls\StaticDialog;..\src\WinControls\TabBar;..\src\WinControls\ToolBar;..\src\MISC\Process;..\src\ScintillaComponent;..\src\MISC;..\src\MISC\SysMsg;..\src\WinControls\StatusBar;..\src;..\src\WinControls\StaticDialog\RunDlg;..\src\tinyxml;..\src\WinControls\ColourPicker;..\src\Win32Explr;..\src\MISC\RegExt;..\src\WinControls\TrayIcon;..\src\WinControls\shortcut;..\src\WinControls\Grid;..\src\WinControls\ContextMenu;..\src\MISC\PluginsManager;..\src\WinControls\Preference;..\src\WinControls\WindowsDlg;..\src\WinControls\TaskList;..\src\WinControls\DockingWnd;..\src\WinControls\TreeView;..\src\WinControls\ToolTip;..\src\MISC\Exception;..\src\MISC\Common;..\src\tinyxml\tinyXmlA;..\src\WinControls\AnsiCharPanel;..\src\WinControls\ClipboardHistory;..\src\WinControls\FindCharsInRange;..\src\WinControls\VerticalFileSwitcher;..\src\WinControls\ProjectPanel;..\src\WinControls\DocumentMap;..\src\WinControls\FunctionList;..\src\uchardet;..\src\WinControls\FileBrowser;..\src\WinControls\ReadDirectoryChanges;..\src\MISC\md5;..\src\WinControls\PluginsAdmin;..\src\json;..\src\MISC\sha2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0600;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0A00;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>UninitializedLocalUsageCheck</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level4</WarningLevel>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <SmallerTypeCheck>false</SmallerTypeCheck>
       <DisableSpecificWarnings>4091;4456;4457;4459</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:strictStrings %(AdditionalOptions)</AdditionalOptions>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalOptions>/fixed:no %(AdditionalOptions)</AdditionalOptions>
@@ -210,7 +218,7 @@
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\src\WinControls\AboutDlg;..\..\scintilla\include;..\include;..\src\WinControls;..\src\WinControls\ImageListSet;..\src\WinControls\OpenSaveFileDialog;..\src\WinControls\SplitterContainer;..\src\WinControls\StaticDialog;..\src\WinControls\TabBar;..\src\WinControls\ToolBar;..\src\MISC\Process;..\src\ScintillaComponent;..\src\MISC;..\src\MISC\SysMsg;..\src\WinControls\StatusBar;..\src;..\src\WinControls\StaticDialog\RunDlg;..\src\tinyxml;..\src\WinControls\ColourPicker;..\src\Win32Explr;..\src\MISC\RegExt;..\src\WinControls\TrayIcon;..\src\WinControls\shortcut;..\src\WinControls\Grid;..\src\WinControls\ContextMenu;..\src\MISC\PluginsManager;..\src\WinControls\Preference;..\src\WinControls\WindowsDlg;..\src\WinControls\TaskList;..\src\WinControls\DockingWnd;..\src\WinControls\TreeView;..\src\WinControls\ToolTip;..\src\MISC\Exception;..\src\MISC\Common;..\src\tinyxml\tinyXmlA;..\src\WinControls\AnsiCharPanel;..\src\WinControls\ClipboardHistory;..\src\WinControls\FindCharsInRange;..\src\WinControls\VerticalFileSwitcher;..\src\WinControls\ProjectPanel;..\src\WinControls\DocumentMap;..\src\WinControls\FunctionList;..\src\uchardet;..\src\WinControls\FileBrowser;..\src\WinControls\ReadDirectoryChanges;..\src\MISC\md5;..\src\WinControls\PluginsAdmin;..\src\json;..\src\MISC\sha2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0600;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0A00;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>UninitializedLocalUsageCheck</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -252,7 +260,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\src\WinControls\AboutDlg;..\..\scintilla\include;..\include;..\src\WinControls;..\src\WinControls\ImageListSet;..\src\WinControls\OpenSaveFileDialog;..\src\WinControls\SplitterContainer;..\src\WinControls\StaticDialog;..\src\WinControls\TabBar;..\src\WinControls\ToolBar;..\src\MISC\Process;..\src\ScintillaComponent;..\src\MISC;..\src\MISC\SysMsg;..\src\WinControls\StatusBar;..\src;..\src\WinControls\StaticDialog\RunDlg;..\src\tinyxml;..\src\WinControls\ColourPicker;..\src\Win32Explr;..\src\MISC\RegExt;..\src\WinControls\TrayIcon;..\src\WinControls\shortcut;..\src\WinControls\Grid;..\src\WinControls\ContextMenu;..\src\MISC\PluginsManager;..\src\WinControls\Preference;..\src\WinControls\WindowsDlg;..\src\WinControls\TaskList;..\src\WinControls\DockingWnd;..\src\WinControls\TreeView;..\src\WinControls\ToolTip;..\src\MISC\Exception;..\src\MISC\Common;..\src\tinyxml\tinyXmlA;..\src\WinControls\AnsiCharPanel;..\src\WinControls\ClipboardHistory;..\src\WinControls\FindCharsInRange;..\src\WinControls\VerticalFileSwitcher;..\src\WinControls\ProjectPanel;..\src\WinControls\DocumentMap;..\src\WinControls\FunctionList;..\src\uchardet;..\src\WinControls\FileBrowser;..\src\WinControls\ReadDirectoryChanges;..\src\MISC\md5;..\src\WinControls\PluginsAdmin;..\src\json;..\src\MISC\sha2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0600;NDEBUG;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0A00;NDEBUG;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
       <StringPooling>true</StringPooling>
@@ -305,7 +313,7 @@ copy ..\src\contextMenu.xml ..\bin\contextMenu.xml
       <OmitFramePointers>false</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\src\WinControls\AboutDlg;..\..\scintilla\include;..\include;..\src\WinControls;..\src\WinControls\ImageListSet;..\src\WinControls\OpenSaveFileDialog;..\src\WinControls\SplitterContainer;..\src\WinControls\StaticDialog;..\src\WinControls\TabBar;..\src\WinControls\ToolBar;..\src\MISC\Process;..\src\ScintillaComponent;..\src\MISC;..\src\MISC\SysMsg;..\src\WinControls\StatusBar;..\src;..\src\WinControls\StaticDialog\RunDlg;..\src\tinyxml;..\src\WinControls\ColourPicker;..\src\Win32Explr;..\src\MISC\RegExt;..\src\WinControls\TrayIcon;..\src\WinControls\shortcut;..\src\WinControls\Grid;..\src\WinControls\ContextMenu;..\src\MISC\PluginsManager;..\src\WinControls\Preference;..\src\WinControls\WindowsDlg;..\src\WinControls\TaskList;..\src\WinControls\DockingWnd;..\src\WinControls\TreeView;..\src\WinControls\ToolTip;..\src\MISC\Exception;..\src\MISC\Common;..\src\tinyxml\tinyXmlA;..\src\WinControls\AnsiCharPanel;..\src\WinControls\ClipboardHistory;..\src\WinControls\FindCharsInRange;..\src\WinControls\VerticalFileSwitcher;..\src\WinControls\ProjectPanel;..\src\WinControls\DocumentMap;..\src\WinControls\FunctionList;..\src\uchardet;..\src\WinControls\FileBrowser;..\src\WinControls\ReadDirectoryChanges;..\src\MISC\md5;..\src\WinControls\PluginsAdmin;..\src\json;..\src\MISC\sha2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0600;NDEBUG;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0A00;NDEBUG;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
       <StringPooling>true</StringPooling>
@@ -357,7 +365,7 @@ copy ..\src\contextMenu.xml ..\bin64\contextMenu.xml
       <OmitFramePointers>false</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\src\WinControls\AboutDlg;..\..\scintilla\include;..\include;..\src\WinControls;..\src\WinControls\ImageListSet;..\src\WinControls\OpenSaveFileDialog;..\src\WinControls\SplitterContainer;..\src\WinControls\StaticDialog;..\src\WinControls\TabBar;..\src\WinControls\ToolBar;..\src\MISC\Process;..\src\ScintillaComponent;..\src\MISC;..\src\MISC\SysMsg;..\src\WinControls\StatusBar;..\src;..\src\WinControls\StaticDialog\RunDlg;..\src\tinyxml;..\src\WinControls\ColourPicker;..\src\Win32Explr;..\src\MISC\RegExt;..\src\WinControls\TrayIcon;..\src\WinControls\shortcut;..\src\WinControls\Grid;..\src\WinControls\ContextMenu;..\src\MISC\PluginsManager;..\src\WinControls\Preference;..\src\WinControls\WindowsDlg;..\src\WinControls\TaskList;..\src\WinControls\DockingWnd;..\src\WinControls\TreeView;..\src\WinControls\ToolTip;..\src\MISC\Exception;..\src\MISC\Common;..\src\tinyxml\tinyXmlA;..\src\WinControls\AnsiCharPanel;..\src\WinControls\ClipboardHistory;..\src\WinControls\FindCharsInRange;..\src\WinControls\VerticalFileSwitcher;..\src\WinControls\ProjectPanel;..\src\WinControls\DocumentMap;..\src\WinControls\FunctionList;..\src\uchardet;..\src\WinControls\FileBrowser;..\src\WinControls\ReadDirectoryChanges;..\src\MISC\md5;..\src\WinControls\PluginsAdmin;..\src\json;..\src\MISC\sha2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0600;NDEBUG;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0A00;NDEBUG;_WINDOWS;_USE_64BIT_TIME_T;TIXML_USE_STL;TIXMLA_USE_STL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS=1;_CRT_NON_CONFORMING_WCSTOK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
       <StringPooling>true</StringPooling>
@@ -666,6 +674,7 @@ copy ..\src\contextMenu.xml ..\binarm64\contextMenu.xml
     <None Include="..\src\cursors\drag.cur" />
     <None Include="..\src\cursors\drag_interdit.cur" />
     <None Include="..\src\cursors\drag_plus.cur" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\clipboardFormats.h" />
@@ -826,11 +835,29 @@ copy ..\src\contextMenu.xml ..\binarm64\contextMenu.xml
     <ClInclude Include="..\src\WinControls\ReadDirectoryChanges\ReadDirectoryChangesPrivate.h" />
     <ClInclude Include="..\src\WinControls\ReadDirectoryChanges\ThreadSafeQueue.h" />
     <ClInclude Include="..\src\WinControls\ReadDirectoryChanges\ReadFileChanges.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="..\src\notepad++.exe.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Windows">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.22000.0\Windows.winmd</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.targets" Condition="Exists('packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.CppWinRT.2.0.210913.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Toolkit.Win32.UI.SDK.6.1.2\build\Microsoft.Toolkit.Win32.UI.SDK.targets'))" />
+  </Target>
 </Project>

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-#include <time.h>
+#include <ctime>
 #include <shlwapi.h>
 #include <shlobj.h>
 #include "Notepad_plus_Window.h"
@@ -126,10 +126,10 @@ void resolveLinkFile(generic_string& linkFilePath)
 	WCHAR targetFilePath[MAX_PATH];
 	WIN32_FIND_DATA wfd = {0};
 
-	HRESULT hres = CoInitialize(NULL);
+	HRESULT hres = CoInitialize(nullptr);
 	if (SUCCEEDED(hres))
 	{
-		hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*)&psl);
+		hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*)&psl);
 		if (SUCCEEDED(hres))
 		{
 			IPersistFile* ppf;
@@ -141,7 +141,7 @@ void resolveLinkFile(generic_string& linkFilePath)
 				if (SUCCEEDED(hres) && hres != S_FALSE)
 				{
 					// Resolve the link. 
-					hres = psl->Resolve(NULL, 0);
+					hres = psl->Resolve(nullptr, 0);
 					if (SUCCEEDED(hres) && hres != S_FALSE)
 					{
 						// Get the path to the link target. 
@@ -193,7 +193,7 @@ BufferID Notepad_plus::doOpen(const generic_string& fileName, bool isRecursive, 
 		::GetLongPathName(longFileName, longFileName, longFileNameBufferSize);
 	}
 
-	bool isSnapshotMode = backupFileName != NULL && PathFileExists(backupFileName);
+	bool isSnapshotMode = backupFileName != nullptr && PathFileExists(backupFileName);
 	if (isSnapshotMode && !PathFileExists(longFileName)) // UNTITLED
 	{
 		wcscpy_s(longFileName, targetFileName.c_str());
@@ -338,12 +338,12 @@ BufferID Notepad_plus::doOpen(const generic_string& fileName, bool isRecursive, 
 
 		if (buffer != BUFFER_INVALID)
 		{
-			isSnapshotMode = (backupFileName != NULL && ::PathFileExists(backupFileName));
+			isSnapshotMode = (backupFileName != nullptr && ::PathFileExists(backupFileName));
 			if (isSnapshotMode)
 			{
 				// To notify plugins that a snapshot dirty file is loaded on startup
 				SCNotification scnN2;
-				scnN2.nmhdr.hwndFrom = 0;
+				scnN2.nmhdr.hwndFrom = nullptr;
 				scnN2.nmhdr.idFrom = (uptr_t)buffer;
 				scnN2.nmhdr.code = NPPN_SNAPSHOTDIRTYFILELOADED;
 				_pluginsManager.notify(&scnN2);
@@ -593,7 +593,7 @@ bool Notepad_plus::doSave(BufferID id, const TCHAR * filename, bool isCopy)
 				if (openInAdminModeRes == IDYES)
 				{
 					TCHAR nppFullPath[MAX_PATH];
-					::GetModuleFileName(NULL, nppFullPath, MAX_PATH);
+					::GetModuleFileName(nullptr, nppFullPath, MAX_PATH);
 
 					generic_string args = TEXT("-multiInst");
 					size_t shellExecRes = (size_t)::ShellExecute(_pPublicInterface->getHSelf(), TEXT("runas"), nppFullPath, args.c_str(), TEXT("."), SW_SHOW);
@@ -628,7 +628,7 @@ bool Notepad_plus::doSave(BufferID id, const TCHAR * filename, bool isCopy)
 				if (openInAdminModeRes == IDYES)
 				{
 					TCHAR nppFullPath[MAX_PATH];
-					::GetModuleFileName(NULL, nppFullPath, MAX_PATH);
+					::GetModuleFileName(nullptr, nppFullPath, MAX_PATH);
 
 					BufferID bufferID = _pEditView->getCurrentBufferID();
 					Buffer * buf = MainFileManager.getBufferByID(bufferID);
@@ -780,7 +780,7 @@ generic_string Notepad_plus::exts2Filters(const generic_string& exts, int maxExt
 {
 	const TCHAR *extStr = exts.c_str();
 	TCHAR aExt[MAX_PATH];
-	generic_string filters(TEXT(""));
+	generic_string filters;
 
 	int j = 0;
 	bool stop = false;
@@ -849,9 +849,9 @@ int Notepad_plus::setFileOpenSaveDlgFilters(CustomFileDialog & fDlg, bool showAl
 
 		bool inExcludedList = false;
 
-		for (size_t j = 0, len = nppGUI._excludedLangList.size() ; j < len ; ++j)
+		for (auto & j : nppGUI._excludedLangList)
 		{
-			if (lid == nppGUI._excludedLangList[j]._langType)
+			if (lid == j._langType)
 			{
 				inExcludedList = true;
 				break;
@@ -861,7 +861,7 @@ int Notepad_plus::setFileOpenSaveDlgFilters(CustomFileDialog & fDlg, bool showAl
 		if (!inExcludedList)
 		{
 			const TCHAR *defList = l->getDefaultExtList();
-			const TCHAR *userList = NULL;
+			const TCHAR *userList = nullptr;
 
 			LexerStylerArray &lsa = (NppParameters::getInstance()).getLStylerArray();
 			const TCHAR *lName = l->getLangName();
@@ -870,7 +870,7 @@ int Notepad_plus::setFileOpenSaveDlgFilters(CustomFileDialog & fDlg, bool showAl
 			if (pLS)
 				userList = pLS->getLexerUserExt();
 
-			generic_string list(TEXT(""));
+			generic_string list;
 			if (defList)
 				list += defList;
 			if (userList)
@@ -1535,7 +1535,7 @@ bool Notepad_plus::fileSave(BufferID id)
 			// Make sure the directory exists
 			if (!::PathFileExists(fn_bak.c_str()))
 			{
-				SHCreateDirectory(NULL, fn_bak.c_str());
+				SHCreateDirectory(nullptr, fn_bak.c_str());
 			}
 
 			// Determine what to name the backed-up file
@@ -1548,7 +1548,7 @@ bool Notepad_plus::fileSave(BufferID id)
 			{
 				const int temBufLen = 32;
 				TCHAR tmpbuf[temBufLen];
-				time_t ltime = time(0);
+				time_t ltime = time(nullptr);
 				struct tm *today;
 
 				today = localtime(&ltime);
@@ -1933,7 +1933,7 @@ bool Notepad_plus::isFileSession(const TCHAR * filename)
 		generic_string fncp = filename;
 		TCHAR *pExt = PathFindExtension(fncp.c_str());
 
-		generic_string usrSessionExt = TEXT("");
+		generic_string usrSessionExt;
 		if (*definedSessionExt != '.')
 		{
 			usrSessionExt += TEXT(".");
@@ -1957,7 +1957,7 @@ bool Notepad_plus::isFileWorkspace(const TCHAR * filename)
 		generic_string fncp = filename;
 		TCHAR *pExt = PathFindExtension(fncp.c_str());
 
-		generic_string usrWorkspaceExt = TEXT("");
+		generic_string usrWorkspaceExt;
 		if (*definedWorkspaceExt != '.')
 		{
 			usrWorkspaceExt += TEXT(".");
@@ -1987,7 +1987,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 {
 	NppParameters& nppParam = NppParameters::getInstance();
 	bool allSessionFilesLoaded = true;
-	BufferID lastOpened = BUFFER_INVALID;
+	auto lastOpened = BUFFER_INVALID;
 	//size_t i = 0;
 	showView(MAIN_VIEW);
 	switchEditViewTo(MAIN_VIEW);	//open files in main
@@ -2000,7 +2000,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 
 		if (isFileSession(pFn) || isFileWorkspace(pFn))
 		{
-			vector<sessionFileInfo>::iterator posIt = session._mainViewFiles.begin() + i;
+			auto posIt = session._mainViewFiles.begin() + i;
 			session._mainViewFiles.erase(posIt);
 			continue;	//skip session files, not supporting recursive sessions or embedded workspace files
 		}
@@ -2013,7 +2013,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 		}
 		if (PathFileExists(pFn))
 		{
-			if (isSnapshotMode && session._mainViewFiles[i]._backupFilePath != TEXT(""))
+			if (isSnapshotMode && !session._mainViewFiles[i]._backupFilePath.empty())
 				lastOpened = doOpen(pFn, false, false, session._mainViewFiles[i]._encoding, session._mainViewFiles[i]._backupFilePath.c_str(), session._mainViewFiles[i]._originalFileLastModifTimestamp);
 			else
 				lastOpened = doOpen(pFn, false, false, session._mainViewFiles[i]._encoding);
@@ -2045,7 +2045,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 
 			Buffer *buf = MainFileManager.getBufferByID(lastOpened);
 
-			if (session._mainViewFiles[i]._foldStates.size() > 0)
+			if (!session._mainViewFiles[i]._foldStates.empty())
 			{
 				if (buf == _mainEditView.getCurrentBuffer()) // current document
 					// Set floding state in the current doccument
@@ -2063,23 +2063,23 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 
 			buf->setUserReadOnly(session._mainViewFiles[i]._isUserReadOnly);
 
-			if (isSnapshotMode && session._mainViewFiles[i]._backupFilePath != TEXT("") && PathFileExists(session._mainViewFiles[i]._backupFilePath.c_str()))
+			if (isSnapshotMode && !session._mainViewFiles[i]._backupFilePath.empty() && PathFileExists(session._mainViewFiles[i]._backupFilePath.c_str()))
 				buf->setDirty(true);
 
 			//Force in the document so we can add the markers
 			//Don't use default methods because of performance
 			Document prevDoc = _mainEditView.execute(SCI_GETDOCPOINTER);
 			_mainEditView.execute(SCI_SETDOCPOINTER, 0, buf->getDocument());
-			for (size_t j = 0, len = session._mainViewFiles[i]._marks.size(); j < len ; ++j)
+			for (unsigned long long _mark : session._mainViewFiles[i]._marks)
 			{
-				_mainEditView.execute(SCI_MARKERADD, session._mainViewFiles[i]._marks[j], MARK_BOOKMARK);
+				_mainEditView.execute(SCI_MARKERADD, _mark, MARK_BOOKMARK);
 			}
 			_mainEditView.execute(SCI_SETDOCPOINTER, 0, prevDoc);
 			++i;
 		}
 		else
 		{
-			vector<sessionFileInfo>::iterator posIt = session._mainViewFiles.begin() + i;
+			auto posIt = session._mainViewFiles.begin() + i;
 			session._mainViewFiles.erase(posIt);
 			allSessionFilesLoaded = false;
 		}
@@ -2102,7 +2102,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 
 		if (isFileSession(pFn) || isFileWorkspace(pFn))
 		{
-			vector<sessionFileInfo>::iterator posIt = session._subViewFiles.begin() + k;
+			auto posIt = session._subViewFiles.begin() + k;
 			session._subViewFiles.erase(posIt);
 			continue;	//skip session files, not supporting recursive sessions or embedded workspace files
 		}
@@ -2115,7 +2115,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 		}
 		if (PathFileExists(pFn))
 		{
-			if (isSnapshotMode && session._subViewFiles[k]._backupFilePath != TEXT(""))
+			if (isSnapshotMode && !session._subViewFiles[k]._backupFilePath.empty())
 				lastOpened = doOpen(pFn, false, false, session._subViewFiles[k]._encoding, session._subViewFiles[k]._backupFilePath.c_str(), session._subViewFiles[k]._originalFileLastModifTimestamp);
 			else
 				lastOpened = doOpen(pFn, false, false, session._subViewFiles[k]._encoding);
@@ -2157,7 +2157,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 			Buffer * buf = MainFileManager.getBufferByID(lastOpened);
 
 			// Set fold states
-			if (session._subViewFiles[k]._foldStates.size() > 0)
+			if (!session._subViewFiles[k]._foldStates.empty())
 			{
 				if (buf == _subEditView.getCurrentBuffer()) // current document
 					// Set floding state in the current doccument
@@ -2180,16 +2180,16 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 			buf->setEncoding(session._subViewFiles[k]._encoding);
 			buf->setUserReadOnly(session._subViewFiles[k]._isUserReadOnly);
 
-			if (isSnapshotMode && session._subViewFiles[k]._backupFilePath != TEXT("") && PathFileExists(session._subViewFiles[k]._backupFilePath.c_str()))
+			if (isSnapshotMode && !session._subViewFiles[k]._backupFilePath.empty() && PathFileExists(session._subViewFiles[k]._backupFilePath.c_str()))
 				buf->setDirty(true);
 
 			//Force in the document so we can add the markers
 			//Don't use default methods because of performance
 			Document prevDoc = _subEditView.execute(SCI_GETDOCPOINTER);
 			_subEditView.execute(SCI_SETDOCPOINTER, 0, buf->getDocument());
-			for (size_t j = 0, len = session._subViewFiles[k]._marks.size(); j < len ; ++j)
+			for (unsigned long long _mark : session._subViewFiles[k]._marks)
 			{
-				_subEditView.execute(SCI_MARKERADD, session._subViewFiles[k]._marks[j], MARK_BOOKMARK);
+				_subEditView.execute(SCI_MARKERADD, _mark, MARK_BOOKMARK);
 			}
 			_subEditView.execute(SCI_SETDOCPOINTER, 0, prevDoc);
 
@@ -2197,7 +2197,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 		}
 		else
 		{
-			vector<sessionFileInfo>::iterator posIt = session._subViewFiles.begin() + k;
+			auto posIt = session._subViewFiles.begin() + k;
 			session._subViewFiles.erase(posIt);
 			allSessionFilesLoaded = false;
 		}
@@ -2244,11 +2244,11 @@ bool Notepad_plus::fileLoadSession(const TCHAR *fn)
 {
 	bool result = false;
 	generic_string sessionFileName;
-	if (fn == NULL)
+	if (fn == nullptr)
 	{
 		CustomFileDialog fDlg(_pPublicInterface->getHSelf());
 		const TCHAR *ext = NppParameters::getInstance().getNppGUI()._definedSessionExt.c_str();
-		generic_string sessionExt = TEXT("");
+		generic_string sessionExt;
 		if (*ext != '\0')
 		{
 			if (*ext != '.')
@@ -2281,7 +2281,7 @@ bool Notepad_plus::fileLoadSession(const TCHAR *fn)
 		if (!isEmptyNpp && (nppGUI._multiInstSetting == multiInstOnSession || nppGUI._multiInstSetting == multiInst))
 		{
 			TCHAR nppFullPath[MAX_PATH];
-			::GetModuleFileName(NULL, nppFullPath, MAX_PATH);
+			::GetModuleFileName(nullptr, nppFullPath, MAX_PATH);
 
 
 			generic_string args = TEXT("-multiInst -nosession -openSession ");
@@ -2306,10 +2306,10 @@ bool Notepad_plus::fileLoadSession(const TCHAR *fn)
 			if (!isAllSuccessful)
 				(NppParameters::getInstance()).writeSession(session2Load, sessionFileName.c_str());
 		}
-		if (result == false)
+		if (!result)
 		{
 			_nativeLangSpeaker.messageBox("SessionFileInvalidError",
-				NULL,
+				nullptr,
 				TEXT("Session file is either corrupted or not valid."),
 				TEXT("Could not Load Session"),
 				MB_OK);
@@ -2347,7 +2347,7 @@ const TCHAR * Notepad_plus::fileSaveSession(size_t nbFile, TCHAR ** fileNames, c
 		(NppParameters::getInstance()).writeSession(currentSession, sessionFile2save);
 		return sessionFile2save;
 	}
-	return NULL;
+	return nullptr;
 }
 
 const TCHAR * Notepad_plus::fileSaveSession(size_t nbFile, TCHAR ** fileNames)
@@ -2355,7 +2355,7 @@ const TCHAR * Notepad_plus::fileSaveSession(size_t nbFile, TCHAR ** fileNames)
 	CustomFileDialog fDlg(_pPublicInterface->getHSelf());
 	const TCHAR *ext = NppParameters::getInstance().getNppGUI()._definedSessionExt.c_str();
 
-	generic_string sessionExt = TEXT("");
+	generic_string sessionExt;
 	if (*ext != '\0')
 	{
 		if (*ext != '.')

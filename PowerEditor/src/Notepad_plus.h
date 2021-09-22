@@ -44,7 +44,7 @@
 #include "documentSnapshot.h"
 #include "md5Dlgs.h"
 #include <vector>
-#include <iso646.h>
+
 
 
 #define MENU 0x01
@@ -165,7 +165,7 @@ public:
 	//! \name File Operations
 	//@{
 	//The doXXX functions apply to a single buffer and dont need to worry about views, with the excpetion of doClose, since closing one view doesnt have to mean the document is gone
-	BufferID doOpen(const generic_string& fileName, bool isRecursive = false, bool isReadOnly = false, int encoding = -1, const TCHAR *backupFileName = NULL, FILETIME fileNameTimestamp = {});
+	BufferID doOpen(const generic_string& fileName, bool isRecursive = false, bool isReadOnly = false, int encoding = -1, const TCHAR *backupFileName = nullptr, FILETIME fileNameTimestamp = {});
 	bool doReload(BufferID id, bool alert = true);
 	bool doSave(BufferID, const TCHAR * filename, bool isSaveCopy = false);
 	void doClose(BufferID, int whichOne, bool doDeleteBackup = false);
@@ -334,7 +334,7 @@ private:
 	//vector<iconLocator> _customIconVect;
 
 	WindowsMenu _windowsMenu;
-	HMENU _mainMenuHandle = NULL;
+	HMENU _mainMenuHandle = nullptr;
 
 	bool _sysMenuEntering = false;
 
@@ -507,7 +507,7 @@ private:
 	int findMachedBracePos(size_t startPos, size_t endPos, char targetSymbol, char matchedSymbol);
 	void maintainIndentation(TCHAR ch);
 
-	void addHotSpot(ScintillaEditView* view = NULL);
+	void addHotSpot(ScintillaEditView* view = nullptr);
 
     void bookmarkAdd(int lineno) const {
 		if (lineno == -1)

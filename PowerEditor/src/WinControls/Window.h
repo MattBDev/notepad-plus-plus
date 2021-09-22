@@ -93,7 +93,7 @@ public:
 
 	virtual bool isVisible() const
 	{
-    	return (::IsWindowVisible(_hSelf)?true:false);
+    	return ::IsWindowVisible(_hSelf) != 0;
 	}
 
 	HWND getHSelf() const
@@ -120,7 +120,7 @@ public:
 
 
 protected:
-	HINSTANCE _hInst = NULL;
-	HWND _hParent = NULL;
-	HWND _hSelf = NULL;
+	HINSTANCE _hInst = nullptr;
+	HWND _hParent = nullptr;
+	HWND _hSelf = nullptr;
 };

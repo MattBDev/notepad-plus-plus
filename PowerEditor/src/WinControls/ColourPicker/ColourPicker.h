@@ -18,6 +18,7 @@
 #pragma once
 
 #include "Window.h"
+#undef GetCurrentTime
 
 class ColourPopup;
 

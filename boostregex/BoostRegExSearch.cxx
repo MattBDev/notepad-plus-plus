@@ -47,12 +47,12 @@ using namespace boost;
 class BoostRegexSearch : public RegexSearchBase
 {
 public:
-	BoostRegexSearch() : _substituted(NULL) {}
+	BoostRegexSearch() : _substituted(nullptr) {}
 	
 	virtual ~BoostRegexSearch()
 	{
 		delete[] _substituted;
-		_substituted = NULL;
+		_substituted = nullptr;
 	}
 	
 	virtual Sci::Position FindText(Document* doc, Sci::Position minPos, Sci::Position maxPos, const char *regex,
@@ -65,9 +65,9 @@ private:
 
 	class Match : private DocWatcher {
 	public:
-		Match() : _document(NULL), _documentModified(false), _position(-1), _endPosition(-1), _endPositionForContinuationCheck(-1)  {}
-		~Match() { setDocument(NULL); }
-		Match(Document* document, Sci::Position position = -1, Sci::Position endPosition = -1) : _document(NULL) { set(document, position, endPosition); }
+		Match() : _document(nullptr), _documentModified(false), _position(-1), _endPosition(-1), _endPositionForContinuationCheck(-1)  {}
+		~Match() { setDocument(nullptr); }
+		Match(Document* document, Sci::Position position = -1, Sci::Position endPosition = -1) : _document(nullptr) { set(document, position, endPosition); }
 		Match& operator=(Match& m) {
 			set(m._document, m.position(), m.endPosition());
 			return *this;
@@ -116,10 +116,10 @@ private:
 			if (newDocument != _document)
 			{
 				if (_document != NULL)
-					_document->RemoveWatcher(this, NULL);
+					_document->RemoveWatcher(this, nullptr);
 				_document = newDocument;
 				if (_document != NULL)
-					_document->AddWatcher(this, NULL);
+					_document->AddWatcher(this, nullptr);
 			}
 		}
 		

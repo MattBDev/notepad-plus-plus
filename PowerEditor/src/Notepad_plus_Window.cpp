@@ -15,12 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-#include <time.h>
+#include <ctime>
 #include <shlwapi.h>
 #include "Notepad_plus_Window.h"
 
 const TCHAR Notepad_plus_Window::_className[32] = TEXT("Notepad++");
-HWND Notepad_plus_Window::gNppHWND = NULL;
+HWND Notepad_plus_Window::gNppHWND = nullptr;
 
 
 
@@ -39,11 +39,11 @@ namespace // anonymous
 		~PaintLocker()
 		{
 			// re-allow drawing for the window
-			LockWindowUpdate(NULL);
+			LockWindowUpdate(nullptr);
 
 			// force re-draw
 			InvalidateRect(handle, nullptr, TRUE);
-			RedrawWindow(handle, nullptr, NULL, RDW_ERASE | RDW_ALLCHILDREN | RDW_FRAME | RDW_INVALIDATE);
+			RedrawWindow(handle, nullptr, nullptr, RDW_ERASE | RDW_ALLCHILDREN | RDW_FRAME | RDW_INVALIDATE);
 		}
 
 		HWND handle;
@@ -59,7 +59,7 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 {
 	time_t timestampBegin = 0;
 	if (cmdLineParams->_showLoadingTime)
-		timestampBegin = time(NULL);
+		timestampBegin = time(nullptr);
 
 	Window::init(hInst, parent);
 	WNDCLASS nppClass;
@@ -70,7 +70,7 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 	nppClass.cbWndExtra = 0;
 	nppClass.hInstance = _hInst;
 	nppClass.hIcon = ::LoadIcon(hInst, MAKEINTRESOURCE(IDI_M30ICON));
-	nppClass.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+	nppClass.hCursor = ::LoadCursor(nullptr, IDC_ARROW);
 	nppClass.hbrBackground = ::CreateSolidBrush(::GetSysColor(COLOR_MENU));
 	nppClass.lpszMenuName = MAKEINTRESOURCE(IDR_M30_MENU);
 	nppClass.lpszClassName = _className;
@@ -104,7 +104,7 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
         // for retrieve it in Notepad_plus_Proc from
         // the CREATESTRUCT.lpCreateParams afterward.
 
-	if (NULL == _hSelf)
+	if (nullptr == _hSelf)
 		throw std::runtime_error("Notepad_plus_Window::init : CreateWindowEx() function return null");
 
 
@@ -145,7 +145,7 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 		::SendMessage(_hSelf, WM_COMMAND, IDM_VIEW_DRAWTABBAR_MULTILINE, 0);
 
 	if (!nppGUI._menuBarShow)
-		::SetMenu(_hSelf, NULL);
+		::SetMenu(_hSelf, nullptr);
 
 	if (cmdLineParams->_isNoTab || (nppGUI._tabStatus & TAB_HIDE))
 	{
@@ -191,8 +191,8 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 	PathAppend(localizationDir, TEXT("localization\\"));
 
 	_notepad_plus_plus_core.getMatchedFileNames(localizationDir.c_str(), patterns, fileNames, false, false);
-	for (size_t i = 0, len = fileNames.size(); i < len; ++i)
-		localizationSwitcher.addLanguageFromXml(fileNames[i]);
+	for (auto &fileName : fileNames)
+		localizationSwitcher.addLanguageFromXml(fileName);
 
 	fileNames.clear();
 	ThemeSwitcher & themeSwitcher = nppParams.getThemeSwitcher();
@@ -206,9 +206,9 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 		appDataThemeDir = nppParams.getAppDataNppDir();
 	    PathAppend(appDataThemeDir, TEXT("themes\\"));
 	    _notepad_plus_plus_core.getMatchedFileNames(appDataThemeDir.c_str(), patterns, fileNames, false, false);
-	    for (size_t i = 0, len = fileNames.size() ; i < len ; ++i)
+	    for (auto & fileName : fileNames)
 	    {
-		    themeSwitcher.addThemeFromXml(fileNames[i]);
+		    themeSwitcher.addThemeFromXml(fileName);
 	    }
     }
 
@@ -235,7 +235,7 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 
 				if (!::PathFileExists(appDataThemePath.c_str()))
 				{
-					::CreateDirectory(appDataThemePath.c_str(), NULL);
+					::CreateDirectory(appDataThemePath.c_str(), nullptr);
 				}
 
 				TCHAR* fn = PathFindFileName(fileNames[i].c_str());
@@ -246,8 +246,8 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 	}
 
 	// Restore all dockable panels from the last session
-	for (size_t i = 0, len = _notepad_plus_plus_core._internalFuncIDs.size() ; i < len ; ++i)
-		::SendMessage(_hSelf, WM_COMMAND, _notepad_plus_plus_core._internalFuncIDs[i], 0);
+	for (int _internalFuncID : _notepad_plus_plus_core._internalFuncIDs)
+		::SendMessage(_hSelf, WM_COMMAND, _internalFuncID, 0);
 
 	std::vector<generic_string> fns;
 	if (cmdLine)
@@ -325,12 +325,12 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 
 	if (cmdLineParams->_showLoadingTime)
 	{
-		time_t timestampEnd = time(NULL);
+		time_t timestampEnd = time(nullptr);
 		double loadTime = difftime(timestampEnd, timestampBegin);
 
 		char dest[256];
 		sprintf(dest, "Loading time : %.0lf seconds", loadTime);
-		::MessageBoxA(NULL, dest, "", MB_OK);
+		::MessageBoxA(nullptr, dest, "", MB_OK);
 	}
 
 	bool isSnapshotMode = nppGUI.isSnapshotMode();
