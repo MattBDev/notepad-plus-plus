@@ -20,6 +20,26 @@
 #include "URLCtrl.h"
 #include "resource.h"
 #include "StaticDialog.h"
+#include <windows.h>
+#include <cstdlib>
+#include <cstring>
+
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.system.h>
+#include <winrt/windows.ui.xaml.hosting.h>
+#include <windows.ui.xaml.hosting.desktopwindowxamlsource.h>
+#include <winrt/windows.ui.xaml.controls.h>
+#include <winrt/Windows.ui.xaml.media.h>
+#include <winrt/Windows.UI.Core.h>
+#include <winrt/MyUWPApp.h>
+
+using namespace winrt;
+using namespace Windows::UI;
+using namespace Windows::UI::Composition;
+using namespace Windows::UI::Xaml::Hosting;
+using namespace Windows::Foundation::Numerics;
+using namespace Windows::UI::Xaml::Controls;
+
 
 #define LICENCE_TXT \
 TEXT("This program is free software; you can redistribute it and/or \
@@ -39,7 +59,18 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.")
 class AboutDlg : public StaticDialog
 {
 public :
-	AboutDlg() = default;
+	AboutDlg() 	{
+		// The call to winrt::init_apartment initializes COM; by default, in a multithreaded apartment.
+		winrt::init_apartment(apartment_type::single_threaded);
+
+		// Initialize the XAML framework's core window for the current thread.
+		WindowsXamlManager winxamlmanager = WindowsXamlManager::InitializeForCurrentThread();
+
+		// This DesktopWindowXamlSource is the object that enables a non-UWP desktop application 
+		// to host WinRT XAML controls in any UI element that is associated with a window handle (HWND).
+		_desktopWindowXamlSource = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+
+	};
 
 	void doDialog();
 
@@ -52,6 +83,7 @@ protected :
 	virtual INT_PTR CALLBACK run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam);
 
 private :
+	DesktopWindowXamlSource _desktopWindowXamlSource{ nullptr };
     URLCtrl _emailLink;
     URLCtrl _pageLink;
 };

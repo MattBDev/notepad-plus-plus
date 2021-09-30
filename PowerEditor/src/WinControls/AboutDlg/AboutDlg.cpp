@@ -18,6 +18,11 @@
 #include "AboutDlg.h"
 #include "Parameters.h"
 #include "localization.h"
+#include <winrt/Windows.UI.Xaml.Media.h>
+#include <winrt/Windows.Foundation.h>
+using namespace winrt;
+using namespace Windows::Foundation;
+using namespace winrt::Windows::UI::Xaml::Media::Imaging;
 
 #pragma warning(disable : 4996) // for GetVersion()
 
@@ -25,8 +30,59 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 {
 	switch (message)
 	{
-        case WM_INITDIALOG :
+        case WM_INITDIALOG : // Sent to the dialog box procedure immediately before a dialog box is displayed
 		{
+			{
+				// Get handle to corewindow
+				auto interop = _desktopWindowXamlSource.as<IDesktopWindowXamlSourceNative>();
+				// Parent the DesktopWindowXamlSource object to current window
+				check_hresult(interop->AttachToWindow(_hSelf));
+
+				// This Hwnd will be the window handler for the Xaml Island: A child window that contains Xaml.  
+				HWND hWndXamlIsland = nullptr;
+                // Get the new child window's hwnd 
+                interop->get_WindowHandle(&hWndXamlIsland);
+				RECT v;
+				::GetWindowRect(_hSelf, &v);
+				int width = v.right - v.left;
+				int height = v.bottom - v.top;
+                ::SetWindowPos(hWndXamlIsland, nullptr, 0, 0, width, height, SWP_SHOWWINDOW);
+                // Create the XAML content.
+                Windows::UI::Xaml::Controls::RelativePanel xamlContainer;
+
+				generic_string buildTime = TEXT("Build time : ");
+
+				WcharMbcsConvertor& wmc = WcharMbcsConvertor::getInstance();
+				buildTime +=  wmc.char2wchar(__DATE__, CP_ACP);
+				buildTime += TEXT(" - ");
+				buildTime +=  wmc.char2wchar(__TIME__, CP_ACP);
+
+                Windows::UI::Xaml::Controls::TextBlock tb;
+                tb.Text(buildTime);
+                tb.VerticalAlignment(Windows::UI::Xaml::VerticalAlignment::Center);
+                tb.HorizontalAlignment(Windows::UI::Xaml::HorizontalAlignment::Center);
+                tb.FontSize(14);
+
+				xamlContainer.Padding(winrt::Windows::UI::Xaml::ThicknessHelper::FromUniformLength(10));
+				
+				/*
+				winrt::Windows::UI::Xaml::Controls::Image img;
+				BitmapImage bitmapImage;
+				bitmapImage.UriSource(winrt::Windows::Foundation::Uri(MAKEINTRESOURCE(IDI_CHAMELEON)));
+			    img.Source(bitmapImage);
+				img.UpdateLayout();
+				xamlContainer.Children().Append(img);
+				xamlContainer.SetAlignLeftWithPanel(img, true);
+				xamlContainer.SetAlignTopWithPanel(img, true);
+				*/
+
+                xamlContainer.Children().Append(tb);
+				xamlContainer.SetAlignRightWithPanel(tb, true);
+				xamlContainer.SetAlignTopWithPanel(tb, true);
+
+				xamlContainer.UpdateLayout();
+				_desktopWindowXamlSource.Content(xamlContainer);
+			}
 			NppDarkMode::autoSubclassAndThemeChildControls(_hSelf);
 
 			HWND compileDateHandle = ::GetDlgItem(_hSelf, IDC_BUILD_DATETIME);
@@ -46,12 +102,6 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 
             HWND licenceEditHandle = ::GetDlgItem(_hSelf, IDC_LICENCE_EDIT);
 			::SendMessage(licenceEditHandle, WM_SETTEXT, 0, reinterpret_cast<LPARAM>(LICENCE_TXT));
-
-            //_emailLink.init(_hInst, _hSelf);
-			//_emailLink.create(::GetDlgItem(_hSelf, IDC_AUTHOR_NAME), TEXT("mailto:don.h@free.fr"));
-			//_emailLink.create(::GetDlgItem(_hSelf, IDC_AUTHOR_NAME), TEXT("https://notepad-plus-plus.org/news/v781-free-uyghur-edition/"));
-			//_emailLink.create(::GetDlgItem(_hSelf, IDC_AUTHOR_NAME), TEXT("https://notepad-plus-plus.org/news/v792-stand-with-hong-kong/"));
-			//_emailLink.create(::GetDlgItem(_hSelf, IDC_AUTHOR_NAME), TEXT("https://notepad-plus-plus.org/news/v791-pour-samuel-paty/"));
 
             _pageLink.init(_hInst, _hSelf);
             _pageLink.create(::GetDlgItem(_hSelf, IDC_HOME_ADDR), TEXT("https://notepad-plus-plus.org/"));
@@ -90,9 +140,6 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 			else
 				hIcon = (HICON)::LoadImage(_hInst, MAKEINTRESOURCE(IDI_CHAMELEON), IMAGE_ICON, w, h, LR_DEFAULTSIZE);
 
-			//HICON hIcon = (HICON)::LoadImage(_hInst, MAKEINTRESOURCE(IDI_JESUISCHARLIE), IMAGE_ICON, 64, 64, LR_DEFAULTSIZE);
-			//HICON hIcon = (HICON)::LoadImage(_hInst, MAKEINTRESOURCE(IDI_GILETJAUNE), IMAGE_ICON, 64, 64, LR_DEFAULTSIZE);
-			//HICON hIcon = (HICON)::LoadImage(_hInst, MAKEINTRESOURCE(IDI_SAMESEXMARRIAGE), IMAGE_ICON, 64, 64, LR_DEFAULTSIZE);
 			DRAWITEMSTRUCT *pdis = (DRAWITEMSTRUCT *)lParam;
 			::DrawIconEx(pdis->hDC, 0, 0, hIcon, w, h, 0, NULL, DI_NORMAL);
 			return TRUE;
@@ -121,9 +168,20 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 
 void AboutDlg::doDialog()
 {
-	if (!isCreated())
+	if (!isCreated()) {
+		if (_desktopWindowXamlSource == nullptr) {
+				// The call to winrt::init_apartment initializes COM; by default, in a multithreaded apartment.
+				winrt::init_apartment(apartment_type::single_threaded);
+				
+				// Initialize the XAML framework's core window for the current thread.
+				WindowsXamlManager winxamlmanager = WindowsXamlManager::InitializeForCurrentThread();
+				
+				// This DesktopWindowXamlSource is the object that enables a non-UWP desktop application 
+				// to host WinRT XAML controls in any UI element that is associated with a window handle (HWND).
+				_desktopWindowXamlSource = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+		}
 		create(IDD_ABOUTBOX);
-
+	}
     // Adjust the position of AboutBox
 	goToCenter();
 }
@@ -400,7 +458,7 @@ INT_PTR CALLBACK DoSaveOrNotBox::run_dlgProc(UINT message, WPARAM wParam, LPARAM
 {
 	switch (message)
 	{
-		case WM_INITDIALOG :
+		case WM_INITDIALOG : // Sent to the dialog box procedure immediately before a dialog box is displayed
 		{
 			NppDarkMode::autoSubclassAndThemeChildControls(_hSelf);
 
