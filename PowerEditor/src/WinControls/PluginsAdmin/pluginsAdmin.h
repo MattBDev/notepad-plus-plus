@@ -149,7 +149,7 @@ public:
 
 private:
 	std::vector<PluginUpdateInfo*> _list;
-	ListView _ui;
+	::ListView _ui;
 
 	SORT_TYPE _sortType = DISPLAY_NAME_ALPHABET_ENCREASE;
 };

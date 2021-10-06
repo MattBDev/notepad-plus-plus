@@ -106,9 +106,9 @@ private:
 	HWND _hToolbarMenu = nullptr;
 	HWND _hSearchEdit = nullptr;
 
-	TreeView *_pTreeView = nullptr;
-	TreeView _treeView;
-	TreeView _treeViewSearchResult;
+	::TreeView *_pTreeView = nullptr;
+	::TreeView _treeView;
+	::TreeView _treeViewSearchResult;
 
 	SCROLLINFO si;
 	long _findLine = -1;
@@ -134,7 +134,7 @@ private:
 	void addInStateArray(TreeStateNode tree2Update, const TCHAR *searchText, bool isSorted);
 	TreeParams* getFromStateArray(generic_string fullFilePath);
 	BOOL setTreeViewImageList(int root_id, int node_id, int leaf_id);
-	bool openSelection(const TreeView &treeView);
+	bool openSelection(const ::TreeView &treeView);
 	bool shouldSort();
 	void setSort(bool isEnabled);
 	void findMarkEntry(HTREEITEM htItem, LONG line);

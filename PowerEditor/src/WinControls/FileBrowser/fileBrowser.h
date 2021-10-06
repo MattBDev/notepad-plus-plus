@@ -163,7 +163,7 @@ public:
 protected:
 	HWND _hToolbarMenu = nullptr;
 
-	TreeView _treeView;
+	::TreeView _treeView;
 	HIMAGELIST _hImaLst = nullptr;
 
 	HMENU _hGlobalMenu = NULL;

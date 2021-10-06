@@ -31,7 +31,6 @@
 #include <winrt/windows.ui.xaml.controls.h>
 #include <winrt/Windows.ui.xaml.media.h>
 #include <winrt/Windows.UI.Core.h>
-#include <winrt/MyUWPApp.h>
 
 using namespace winrt;
 using namespace Windows::UI;

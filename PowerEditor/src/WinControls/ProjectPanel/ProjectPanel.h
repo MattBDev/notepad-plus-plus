@@ -105,7 +105,7 @@ public:
 	bool enumWorkSpaceFiles(HTREEITEM tvFrom, const std::vector<generic_string> & patterns, std::vector<generic_string> & fileNames);
 
 protected:
-	TreeView _treeView;
+	::TreeView _treeView;
 	HIMAGELIST _hImaLst = nullptr;
 	HWND _hToolbarMenu = nullptr;
 	HMENU _hWorkSpaceMenu = nullptr;
