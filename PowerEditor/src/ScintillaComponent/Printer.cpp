@@ -17,7 +17,6 @@
 
 #include "Printer.h"
 #include "RunDlg.h"
-//#include "Parameters.h"
 
 void replaceStr(generic_string & str, generic_string str2BeReplaced, generic_string replacement)
 {
@@ -245,16 +244,10 @@ size_t Printer::doPrint(bool justDoIt)
 	const TCHAR longDateVar[] = TEXT("$(LONG_DATE)");
 	const TCHAR timeVar[] = TEXT("$(TIME)");
 
-	const int bufferSize = 64;
-	TCHAR shortDate[bufferSize];
-	TCHAR longDate[bufferSize];
-	TCHAR time[bufferSize];
-
-	SYSTEMTIME st;
-	::GetLocalTime(&st);
-	::GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, NULL, shortDate, bufferSize);
-	::GetDateFormat(LOCALE_USER_DEFAULT, DATE_LONGDATE, &st, NULL, longDate, bufferSize);
-	::GetTimeFormat(LOCALE_USER_DEFAULT, TIME_NOSECONDS, &st, NULL, time, bufferSize);
+    winrt::Windows::Foundation::DateTime dateToFormat = winrt::clock::now();
+	std::wstring shortDate { winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"shortdate").Format(dateToFormat) };
+	std::wstring longDate { winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"longdate").Format(dateToFormat) };
+	std::wstring time { winrt::Windows::Globalization::DateTimeFormatting::DateTimeFormatter(L"shorttime").Format(dateToFormat) };
 
 	if (nppGUI._printSettings.isHeaderPresent())
 	{

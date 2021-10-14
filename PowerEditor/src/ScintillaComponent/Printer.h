@@ -18,7 +18,14 @@
 #pragma once
 
 #include "ScintillaEditView.h"
+#include <winrt/base.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Globalization.DateTimeFormatting.h>
+#include <winrt/Windows.Globalization.h>
 
+using namespace winrt;
+using namespace Windows::Globalization;
+using namespace Windows::Globalization::DateTimeFormatting;
 
 struct NPP_RangeToFormat {
 	HDC hdc;
