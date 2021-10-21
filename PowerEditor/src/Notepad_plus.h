@@ -44,8 +44,12 @@
 #include "documentSnapshot.h"
 #include "md5Dlgs.h"
 #include <vector>
+#include "versionhelpers.h"
 
 
+#include <winrt/base.h>
+
+using namespace winrt;
 
 #define MENU 0x01
 #define TOOLBAR 0x02
@@ -171,7 +175,7 @@ public:
 	void doClose(BufferID, int whichOne, bool doDeleteBackup = false);
 	//bool doDelete(const TCHAR *fileName) const {return ::DeleteFile(fileName) != 0;};
 
-	void fileOpen();
+	winrt::fire_and_forget fileOpen();
 	void fileNew();
     bool fileReload();
 	bool fileClose(BufferID id = BUFFER_INVALID, int curView = -1);	//use curView to override view to close from

@@ -28,7 +28,7 @@ LRESULT CALLBACK hookProc(int nCode, WPARAM wParam, LPARAM lParam)
     {
 		::PostMessage(hWndServer, WM_RBUTTONUP, 0, 0);
     }
-	else if ((nCode >= 0) && (wParam == WM_MOUSEWHEEL) && windowsVersion >= WV_WIN10)
+	else if ((nCode >= 0) && (wParam == WM_MOUSEWHEEL) && IsWindows10OrGreater())
 	{
 		MSLLHOOKSTRUCT* pMD = (MSLLHOOKSTRUCT*)lParam;
 		RECT rCtrl;
@@ -84,7 +84,6 @@ INT_PTR CALLBACK TaskListDlg::run_dlgProc(UINT Message, WPARAM wParam, LPARAM lP
 
 			_taskList.display(true);
 			hWndServer = _hSelf;
-			windowsVersion = NppParameters::getInstance().getWinVersion();
 
 #ifndef WH_MOUSE_LL
 #define WH_MOUSE_LL 14

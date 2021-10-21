@@ -39,23 +39,14 @@ void allowWmCopydataMessages(Notepad_plus_Window& notepad_plus_plus, const NppPa
 	#endif
 	// Tell UAC that lower integrity processes are allowed to send WM_COPYDATA messages to this process (or window)
 	// This allows opening new files to already opened elevated Notepad++ process via explorer context menu.
-	if (ver >= WV_VISTA || ver == WV_UNKNOWN)
+	if (IsWindowsVistaOrGreater())
 	{
 		HMODULE hDll = GetModuleHandle(TEXT("user32.dll"));
 		if (hDll)
 		{
 			// According to MSDN ChangeWindowMessageFilter may not be supported in future versions of Windows,
 			// that is why we use ChangeWindowMessageFilterEx if it is available (windows version >= Win7).
-			if (nppParameters.getWinVersion() == WV_VISTA)
-			{
-				typedef BOOL (WINAPI *MESSAGEFILTERFUNC)(UINT message,DWORD dwFlag);
-
-				MESSAGEFILTERFUNC func = (MESSAGEFILTERFUNC)::GetProcAddress( hDll, "ChangeWindowMessageFilter" );
-
-				if (func)
-					func(WM_COPYDATA, MSGFLT_ADD);
-			}
-			else
+			if (IsWindows7OrGreater())
 			{
 				typedef BOOL (WINAPI *MESSAGEFILTERFUNCEX)(HWND hWnd,UINT message,DWORD action,VOID* pChangeFilterStruct);
 
@@ -63,7 +54,18 @@ void allowWmCopydataMessages(Notepad_plus_Window& notepad_plus_plus, const NppPa
 
 				if (func)
 					func(notepad_plus_plus.getHSelf(), WM_COPYDATA, MSGFLT_ALLOW, nullptr );
+
 			}
+			else
+			{
+				typedef BOOL (WINAPI *MESSAGEFILTERFUNC)(UINT message,DWORD dwFlag);
+
+				MESSAGEFILTERFUNC func = (MESSAGEFILTERFUNC)::GetProcAddress( hDll, "ChangeWindowMessageFilter" );
+
+				if (func)
+					func(WM_COPYDATA, MSGFLT_ADD);;
+			}
+
 		}
 	}
 }

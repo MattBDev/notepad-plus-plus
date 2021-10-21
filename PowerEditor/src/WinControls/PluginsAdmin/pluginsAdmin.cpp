@@ -713,8 +713,7 @@ typedef const char * (__cdecl * PFUNCGETPLUGINLIST)();
 bool PluginsAdminDlg::isValide()
 {
 	// GUP.exe doesn't work under XP
-	winVer winVersion = (NppParameters::getInstance()).getWinVersion();
-	if (winVersion <= WV_XP)
+	if (!IsWindowsVistaOrGreater())
 	{
 		return false;
 	}

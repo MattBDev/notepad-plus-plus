@@ -222,12 +222,12 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 	themeSwitcher.setThemeDirPath(nppThemeDir);
 
 	_notepad_plus_plus_core.getMatchedFileNames(nppThemeDir.c_str(), patterns, fileNames, false, false);
-	for (size_t i = 0, len = fileNames.size(); i < len ; ++i)
+	for (auto & fileName : fileNames)
 	{
-		generic_string themeName( themeSwitcher.getThemeFromXmlFileName(fileNames[i].c_str()) );
+		generic_string themeName( themeSwitcher.getThemeFromXmlFileName(fileName.c_str()) );
 		if (!themeSwitcher.themeNameExists(themeName.c_str()) )
 		{
-			themeSwitcher.addThemeFromXml(fileNames[i]);
+			themeSwitcher.addThemeFromXml(fileName);
 			
 			if (!appDataThemeDir.empty())
 			{
@@ -238,9 +238,9 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 					::CreateDirectory(appDataThemePath.c_str(), nullptr);
 				}
 
-				TCHAR* fn = PathFindFileName(fileNames[i].c_str());
+				TCHAR* fn = PathFindFileName(fileName.c_str());
 				PathAppend(appDataThemePath, fn);
-				themeSwitcher.addThemeStylerSavePath(fileNames[i], appDataThemePath);
+				themeSwitcher.addThemeStylerSavePath(fileName, appDataThemePath);
 			}
 		}
 	}
@@ -337,7 +337,7 @@ void Notepad_plus_Window::init(HINSTANCE hInst, HWND parent, const TCHAR *cmdLin
 	if (isSnapshotMode)
 	{
 		_notepad_plus_plus_core.checkModifiedDocument(false);
-		// Lauch backup task
+		// Launch backup task
 		_notepad_plus_plus_core.launchDocumentBackupTask();
 	}
 

@@ -503,7 +503,6 @@ BEGIN
         BEGIN
             MENUITEM "Windows (CR LF)",             IDM_FORMAT_TODOS
             MENUITEM "Unix (LF)",                   IDM_FORMAT_TOUNIX
-            MENUITEM "Macintosh (CR)",              IDM_FORMAT_TOMAC
         END
         POPUP "&Blank Operations"
         BEGIN

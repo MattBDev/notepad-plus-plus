@@ -45,7 +45,7 @@ namespace // anonymous
 				if (i + 1 < length && data[i + 1] == LF)
 					return EolType::windows;
 
-				return EolType::macos;
+				//return EolType::macos;
 			}
 
 			if (data[i] == LF)

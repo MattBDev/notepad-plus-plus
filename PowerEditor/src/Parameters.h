@@ -1,4 +1,4 @@
-// This file is part of Notepad++ project
+﻿// This file is part of Notepad++ project
 // Copyright (C)2021 Don HO <don.h@free.fr>
 
 // This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@
 #include <assert.h>
 #include <tchar.h>
 #include <map>
+#include "versionhelpers.h"
 
 #ifdef _WIN64
 
@@ -785,6 +786,7 @@ struct NppGUI final
 	NewDocDefaultSettings _newDocDefaultSettings;
 
 	generic_string _dateTimeFormat = TEXT("yyyy-MM-dd HH:mm:ss");
+	//generic_string _dateTimeFormat = TEXT("{year.full}-{month.integer}‎-‎{day.integer}‎ {hour.integer}‎:‎{minute.integer(2)}‎:‎{second.integer(2)}");
 	bool _dateTimeReverseDefaultOrder = false;
 
 	void setTabReplacedBySpace(bool b) {_tabReplacedBySpace = b;};

@@ -370,7 +370,6 @@
 #define    IDM_FORMAT    (IDM + 5000)
     #define    IDM_FORMAT_TODOS             (IDM_FORMAT + 1)
     #define    IDM_FORMAT_TOUNIX            (IDM_FORMAT + 2)
-    #define    IDM_FORMAT_TOMAC             (IDM_FORMAT + 3)
     #define    IDM_FORMAT_ANSI              (IDM_FORMAT + 4)
     #define    IDM_FORMAT_UTF_8             (IDM_FORMAT + 5)
     #define    IDM_FORMAT_UTF_16BE          (IDM_FORMAT + 6)

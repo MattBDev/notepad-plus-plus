@@ -2,48 +2,68 @@
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+  xmlns:uap11="http://schemas.microsoft.com/appx/manifest/uap/windows10/11"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:rescap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/3"
+  IgnorableNamespaces="uap uap2 uap3 uap4 uap10 uap11 mp rescap rescap3">
 
-  <Identity
-    Name="26707c06-0309-4a30-91dd-2ec9c37d1da3"
-    Publisher="CN=MattB"
-    Version="1.0.0.0" />
+    <Identity
+      Name="26707c06-0309-4a30-91dd-2ec9c37d1da3"
+      Publisher="CN=MattB"
+      Version="1.0.0.0" />
 
-  <Properties>
-    <DisplayName>Packaging</DisplayName>
-    <PublisherDisplayName>MattB</PublisherDisplayName>
-    <Logo>Images\StoreLogo.png</Logo>
-  </Properties>
+    <Properties>
+        <DisplayName>Packaging</DisplayName>
+        <PublisherDisplayName>MattB</PublisherDisplayName>
+        <Logo>Images\StoreLogo.png</Logo>
+    </Properties>
 
-  <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
-  </Dependencies>
+    <Dependencies>
+        <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+        <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+    </Dependencies>
 
-  <Resources>
-    <Resource Language="x-generate"/>
-  </Resources>
+    <Resources>
+        <Resource Language="x-generate"/>
+    </Resources>
 
-  <Applications>
-    <Application Id="App"
-      Executable="$targetnametoken$.exe"
-      EntryPoint="$targetentrypoint$">
-      <uap:VisualElements
-        DisplayName="Packaging"
-        Description="Packaging"
-        BackgroundColor="transparent"
-        Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
-        <uap:SplashScreen Image="Images\SplashScreen.png" />
-      </uap:VisualElements>
-    </Application>
-  </Applications>
+    <Applications>
+        <Application Id="App"
+          Executable="$targetnametoken$.exe"
+          EntryPoint="Windows.FullTrustApplication"
+          uap11:CurrentDirectoryPath="$(env:USERPROFILE)">
+            <uap:VisualElements
+              DisplayName="Notepad WinRT"
+              Description="Notepad WinRT"
+              BackgroundColor="transparent"
+              Square150x150Logo="Images\Square150x150Logo.png"
+              Square44x44Logo="Images\Square44x44Logo.png">
+                <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
+                <uap:SplashScreen Image="Images\SplashScreen.png" />
+            </uap:VisualElements>
+            <Extensions>
+                <uap:Extension Category="windows.fileTypeAssociation">
+                    <uap:FileTypeAssociation Name="txtfile">
+                        <uap:SupportedFileTypes>
+                            <uap:FileType>.txt</uap:FileType>
+                        </uap:SupportedFileTypes>
+                        <uap2:SupportedVerbs>
+                            <uap3:Verb Id="Edit" Parameters="%1">Edit</uap3:Verb>
+                        </uap2:SupportedVerbs>
+                    </uap:FileTypeAssociation>
+                </uap:Extension>
+            </Extensions>
+        </Application>
+    </Applications>
 
-  <Capabilities>
-    <Capability Name="internetClient" />
-    <rescap:Capability Name="runFullTrust" />
-  </Capabilities>
+    <Capabilities>
+        <Capability Name="internetClient" />
+        <rescap:Capability Name="runFullTrust" />
+    </Capabilities>
 </Package>

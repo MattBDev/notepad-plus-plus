@@ -149,8 +149,7 @@ Notepad_plus::Notepad_plus()
 
 	// Determine if user is administrator.
 	BOOL is_admin;
-	winVer ver = nppParam.getWinVersion();
-	if (ver >= WV_VISTA || ver == WV_UNKNOWN)
+	if (IsWindowsVistaOrGreater())
 	{
 		SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
 		PSID AdministratorsGroup;
@@ -2597,8 +2596,8 @@ void Notepad_plus::setDisplayFormat(EolType format)
 	const TCHAR* str = TEXT("??");
 	switch (format)
 	{
-		case EolType::windows: str = TEXT("Windows (CR LF)"); break;
-		case EolType::macos:   str = TEXT("Macintosh (CR)"); break;
+		case EolType::windows: str = TEXT("Windows (CRLF)"); break;
+		//case EolType::macos:   str = TEXT("Macintosh (CR)"); break;
 		case EolType::unix:    str = TEXT("Unix (LF)"); break;
 		case EolType::unknown: str = TEXT("Unknown"); assert(false);  break;
 	}
@@ -4513,7 +4512,6 @@ void Notepad_plus::enableConvertMenuItems(EolType format) const
 {
 	enableCommand(IDM_FORMAT_TODOS, (format != EolType::windows), MENU);
 	enableCommand(IDM_FORMAT_TOUNIX, (format != EolType::unix), MENU);
-	enableCommand(IDM_FORMAT_TOMAC, (format != EolType::macos), MENU);
 }
 
 

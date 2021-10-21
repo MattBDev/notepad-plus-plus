@@ -151,7 +151,7 @@ static const WinMenuKeyDefinition winKeyDefs[] =
 	{ VK_NULL,    IDM_EDIT_INSERT_DATETIME_CUSTOMIZED,          false, false, false, nullptr },
 	{ VK_NULL,    IDM_FORMAT_TODOS,                             false, false, false, TEXT("EOL Conversion to Windows (CR LF)") },
 	{ VK_NULL,    IDM_FORMAT_TOUNIX,                            false, false, false, TEXT("EOL Conversion to Unix (LF)") },
-	{ VK_NULL,    IDM_FORMAT_TOMAC,                             false, false, false, TEXT("EOL Conversion to Macintosh (CR)") },
+	//{ VK_NULL,    IDM_FORMAT_TOMAC,                             false, false, false, TEXT("EOL Conversion to Macintosh (CR)") },
 	{ VK_NULL,    IDM_EDIT_TRIMTRAILING,                        false, false, false, nullptr },
 	{ VK_NULL,    IDM_EDIT_TRIMLINEHEAD,                        false, false, false, nullptr },
 	{ VK_NULL,    IDM_EDIT_TRIM_BOTH,                           false, false, false, nullptr },
@@ -796,19 +796,20 @@ winVer NppParameters::getWindowsVersion()
    {
 		case VER_PLATFORM_WIN32_NT:
 		{
-			if (osvi.dwMajorVersion == 10 && osvi.dwMinorVersion == 0)
+			if (IsWindows10OrGreater())
+			{
 				return WV_WIN10;
-
-			if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 3)
+			}
+			if (IsWindows8Point1OrGreater())
 				return WV_WIN81;
 
-			if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 2)
+			if (IsWindows8OrGreater())
 				return WV_WIN8;
 
-			if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 1)
+			if (IsWindows7OrGreater())
 				return WV_WIN7;
 
-			if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0)
+			if (IsWindowsVistaOrGreater())
 				return WV_VISTA;
 
 			if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2)
@@ -818,10 +819,10 @@ winVer NppParameters::getWindowsVersion()
 				return WV_S2003;
 			}
 
-			if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1)
+			if (IsWindowsXPOrGreater())
 				return WV_XP;
 
-			if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
+			if (IsWindowsThresholdOrGreater())
 				return WV_W2K;
 
 			if (osvi.dwMajorVersion <= 4)
@@ -1018,7 +1019,7 @@ bool NppParameters::load()
 	if (_isLocal)
 	{
 		// We check if OS is Vista or greater version
-		if (_winVersion >= WV_VISTA)
+		if (IsWindowsVistaOrGreater())
 		{
 			generic_string progPath = getSpecialFolderLocation(CSIDL_PROGRAM_FILES);
 			TCHAR nppDirLocation[MAX_PATH];
@@ -4766,9 +4767,9 @@ void NppParameters::feedGUIParameters(TiXmlNode *node)
 					case static_cast<LPARAM>(EolType::windows) :
 						newFormat = EolType::windows;
 						break;
-					case static_cast<LPARAM>(EolType::macos) :
-						newFormat = EolType::macos;
-						break;
+					//case static_cast<LPARAM>(EolType::macos) :
+					//	newFormat = EolType::macos;
+					//	break;
 					case static_cast<LPARAM>(EolType::unix) :
 						newFormat = EolType::unix;
 						break;
@@ -7549,8 +7550,8 @@ EolType convertIntToFormatType(int value, EolType defvalue)
 	{
 		case static_cast<LPARAM>(EolType::windows) :
 			return EolType::windows;
-		case static_cast<LPARAM>(EolType::macos) :
-				return EolType::macos;
+		//case static_cast<LPARAM>(EolType::macos) :
+		//		return EolType::macos;
 		case static_cast<LPARAM>(EolType::unix) :
 			return EolType::unix;
 		default:

@@ -488,7 +488,7 @@ void ViewZoneDlg::doDialog()
 {
 	if (!isCreated())
 	{
-		bool win10 = (NppParameters::getInstance()).getWinVersion() >= WV_WIN10;
+		bool win10 = IsWindows10OrGreater();
 		create(win10 ? IDD_VIEWZONE : IDD_VIEWZONE_CLASSIC);
 	}
 	display();

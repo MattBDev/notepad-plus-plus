@@ -34,6 +34,14 @@
 #include "md5.h"
 #include "sha-256.h"
 
+#include <winrt/base.h>
+#include <winrt/Windows.Globalization.DateTimeFormatting.h>
+#include <winrt/Windows.Globalization.h>
+
+using namespace Windows::Foundation;
+using namespace Windows::Globalization;
+using namespace Windows::Globalization::DateTimeFormatting;
+
 using namespace std;
 
 std::mutex command_mutex;
@@ -70,15 +78,17 @@ void Notepad_plus::command(int id)
 		case IDM_EDIT_INSERT_DATETIME_SHORT:
 		case IDM_EDIT_INSERT_DATETIME_LONG:
 		{
-			SYSTEMTIME currentTime = { 0 };
-			::GetLocalTime(&currentTime);
-
-			wchar_t dateStr[128] = { 0 };
-			wchar_t timeStr[128] = { 0 };
+			DateTime dateToFormat = winrt::clock::now();
+			winrt::hstring dateStr;
 
 			int dateFlag = (id == IDM_EDIT_INSERT_DATETIME_SHORT) ? DATE_SHORTDATE : DATE_LONGDATE;
-			GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, dateFlag, &currentTime, NULL, dateStr, sizeof(dateStr) / sizeof(dateStr[0]), NULL);
-			GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, TIME_NOSECONDS, &currentTime, NULL, timeStr, sizeof(timeStr) / sizeof(timeStr[0]));
+			if (dateFlag == DATE_SHORTDATE)
+			{
+				dateStr = DateTimeFormatter(L"period.abbreviated").Format(dateToFormat);
+			} else {
+				dateStr = DateTimeFormatter(L"longdate").Format(dateToFormat);
+			}
+			winrt::hstring timeStr { DateTimeFormatter(L"shorttime").Format(dateToFormat) };
 
 			generic_string dateTimeStr;
 			if (NppParameters::getInstance().getNppGUI()._dateTimeReverseDefaultOrder)
@@ -546,7 +556,7 @@ void Notepad_plus::command(int id)
 					url = TEXT("https://www.google.com/search?q=$(CURRENT_WORD)");
 				}
 			}
-			else if (nppGui._searchEngineChoice == nppGui.se_duckDuckGo || nppGui._searchEngineChoice == nppGui.se_bing)
+			else if (nppGui._searchEngineChoice == nppGui.se_duckDuckGo)
 			{
 				url = TEXT("https://duckduckgo.com/?q=$(CURRENT_WORD)");
 			}
@@ -554,9 +564,9 @@ void Notepad_plus::command(int id)
 			{
 				url = TEXT("https://www.google.com/search?q=$(CURRENT_WORD)");
 			}
-			else if (nppGui._searchEngineChoice == nppGui.se_yahoo)
+			else if (nppGui._searchEngineChoice == nppGui.se_yahoo || nppGui._searchEngineChoice == nppGui.se_bing)
 			{
-				url = TEXT("https://search.yahoo.com/search?q=$(CURRENT_WORD)");
+				url = TEXT("https://www.bing.com/search?q=$(CURRENT_WORD)");
 			}
 			else if (nppGui._searchEngineChoice == nppGui.se_stackoverflow)
 			{
@@ -2509,11 +2519,9 @@ void Notepad_plus::command(int id)
 
 		case IDM_FORMAT_TODOS:
 		case IDM_FORMAT_TOUNIX:
-		case IDM_FORMAT_TOMAC:
+		//case IDM_FORMAT_TOMAC:
 		{
-			EolType newFormat = (id == IDM_FORMAT_TODOS)
-				? EolType::windows
-				: (id == IDM_FORMAT_TOUNIX) ? EolType::unix : EolType::macos;
+			EolType newFormat = (id == IDM_FORMAT_TODOS) ? EolType::windows : EolType::unix;
 
 			Buffer* buf = _pEditView->getCurrentBuffer();
 
@@ -3861,7 +3869,7 @@ void Notepad_plus::command(int id)
 			case IDM_SEARCH_CLEARALLMARKS    :
 			case IDM_FORMAT_TODOS  :
 			case IDM_FORMAT_TOUNIX :
-			case IDM_FORMAT_TOMAC  :
+			//case IDM_FORMAT_TOMAC  :
 			case IDM_VIEW_IN_FIREFOX :
 			case IDM_VIEW_IN_CHROME  :
 			case IDM_VIEW_IN_EDGE    :

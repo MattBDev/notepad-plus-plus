@@ -29,15 +29,27 @@
 #include <tchar.h>
 #include <unordered_set>
 
+#include <winrt/base.h>
+#include "winrt/Windows.Foundation.Collections.h"
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.Storage.AccessCache.h>
+#include <winrt/Windows.Storage.Pickers.h>
+#include <winrt/Windows.Storage.Provider.h>
+
 using namespace std;
+using namespace winrt;
+using namespace Windows::Foundation;
+using namespace Windows::Foundation::Collections;
+using namespace Windows::Storage;
+using namespace Windows::Storage::Pickers;
 
 DWORD WINAPI Notepad_plus::monitorFileOnChange(void * params)
 {
-	MonitorInfo *monitorInfo = static_cast<MonitorInfo *>(params);
+	auto *monitorInfo = static_cast<MonitorInfo *>(params);
 	Buffer *buf = monitorInfo->_buffer;
 	HWND h = monitorInfo->_nppHandle;
 
-	const TCHAR *fullFileName = (const TCHAR *)buf->getFullPathName();
+	const auto *fullFileName = (const TCHAR *)buf->getFullPathName();
 
 	//The folder to watch :
 	WCHAR folderToMonitor[MAX_PATH];
@@ -176,7 +188,7 @@ BufferID Notepad_plus::doOpen(const generic_string& fileName, bool isRecursive, 
 	NppParameters& nppParam = NppParameters::getInstance();
 	TCHAR longFileName[longFileNameBufferSize];
 
-	const DWORD getFullPathNameResult = ::GetFullPathName(targetFileName.c_str(), longFileNameBufferSize, longFileName, NULL);
+	const DWORD getFullPathNameResult = ::GetFullPathName(targetFileName.c_str(), longFileNameBufferSize, longFileName, nullptr);
 	if (getFullPathNameResult == 0)
 	{
 		return BUFFER_INVALID;
@@ -259,7 +271,7 @@ BufferID Notepad_plus::doOpen(const generic_string& fileName, bool isRecursive, 
 
     bool globbing = wcsrchr(longFileName, TCHAR('*')) || wcsrchr(longFileName, TCHAR('?'));
 
-	if (!isSnapshotMode) // if not backup mode, or backupfile path is invalid
+	if (!isSnapshotMode) // if not backup mode, or backup file path is invalid
 	{
 		if (!PathFileExists(longFileName) && !globbing)
 		{
@@ -735,7 +747,7 @@ void Notepad_plus::doClose(BufferID id, int whichOne, bool doDeleteBackup)
 		hideView(whichOne);
 
 		// if the current activated buffer is in this view,
-		// then get buffer ID to remove the entry from File Switcher Pannel
+		// then get buffer ID to remove the entry from File Switcher Panel
 		hiddenBufferID = reinterpret_cast<BufferID>(::SendMessage(_pPublicInterface->getHSelf(), NPPM_GETBUFFERIDFROMPOS, 0, whichOne));
 		if (!isBufRemoved && hiddenBufferID != BUFFER_INVALID && _pDocumentListPanel)
 			_pDocumentListPanel->closeItem(hiddenBufferID, whichOne);
@@ -747,7 +759,7 @@ void Notepad_plus::doClose(BufferID id, int whichOne, bool doDeleteBackup)
 		scnN.nmhdr.code = NPPN_FILECLOSED;
 		_pluginsManager.notify(&scnN);
 
-		// The document could be clonned.
+		// The document could be cloned.
 		// if the same buffer ID is not found then remove the entry from File Switcher Panel
 		if (_pDocumentListPanel)
 		{
@@ -836,7 +848,7 @@ generic_string Notepad_plus::exts2Filters(const generic_string& exts, int maxExt
 int Notepad_plus::setFileOpenSaveDlgFilters(CustomFileDialog & fDlg, bool showAllExt, int langType)
 {
 	NppParameters& nppParam = NppParameters::getInstance();
-	NppGUI & nppGUI = (NppGUI & )nppParam.getNppGUI();
+	auto & nppGUI = (NppGUI & )nppParam.getNppGUI();
 
 	int i = 0;
 	Lang *l = NppParameters::getInstance().getLangFromIndex(i++);
@@ -967,7 +979,7 @@ bool Notepad_plus::fileCloseAll(bool doDeleteBackup, bool isSnapshotMode)
 		BufferID id = _mainDocTab.getBufferByIndex(i);
 		Buffer * buf = MainFileManager.getBufferByID(id);
 
-		// Put all the BufferID from main vaiew to hash table
+		// Put all the BufferID from main view to hash table.
 		// hash table is used for fast searching
 		uniqueBuffers.insert(id);
 
@@ -979,7 +991,7 @@ bool Notepad_plus::fileCloseAll(bool doDeleteBackup, bool isSnapshotMode)
 		{
 			if (isSnapshotMode)
 			{
-				if (buf->getBackupFileName() == TEXT("") || !::PathFileExists(buf->getBackupFileName().c_str())) //backup file has been deleted from outside
+				if (buf->getBackupFileName().empty() || !::PathFileExists(buf->getBackupFileName().c_str())) //backup file has been deleted from outside
 				{
 					// warning user and save it if user want it.
 					activateBuffer(id, MAIN_VIEW);
@@ -1063,7 +1075,7 @@ bool Notepad_plus::fileCloseAll(bool doDeleteBackup, bool isSnapshotMode)
 		{
 			if (isSnapshotMode)
 			{
-				if (buf->getBackupFileName() == TEXT("") || !::PathFileExists(buf->getBackupFileName().c_str())) //backup file has been deleted from outside
+				if (buf->getBackupFileName().empty() || !::PathFileExists(buf->getBackupFileName().c_str())) //backup file has been deleted from outside
 				{
 					// warning user and save it if user want it.
 					activateBuffer(id, SUB_VIEW);
@@ -1112,7 +1124,7 @@ bool Notepad_plus::fileCloseAll(bool doDeleteBackup, bool isSnapshotMode)
 				else if (res == IDCANCEL)
 				{
 					return false;
-					//otherwise continue (IDNO)
+					//otherwise, continue (IDNO)
 				}
 				else if (res == IDIGNORE)
 				{
@@ -1197,7 +1209,7 @@ bool Notepad_plus::fileCloseAllGiven(const std::vector<int>& krvecBufferIndexes)
 			*	IDRETRY		: Yes to All
 			*	IDNO		: No
 			*	IDIGNORE	: No To All
-			*	IDCANCEL	: Cancel Opration
+			*	IDCANCEL	: Cancel Operation
 			*/			
 
 			int res = saveToAll ? IDYES : doSaveOrNot(buf->getFullPathName(), nbDirtyFiles > 1);
@@ -1461,7 +1473,7 @@ bool Notepad_plus::fileCloseAllButCurrent()
 	size_t nbItems = _pDocTab->nbItem();
 	activateBuffer(_pDocTab->getBufferByIndex(0), viewNo);
 	
-	// After activateBuffer() call, if file is deleteed, user will decide to keep or not the tab
+	// After activateBuffer() call, if file is deleted, user will decide to keep or not the tab
 	// So here we check if the 1st tab is closed or not
 	size_t newNbItems = _pDocTab->nbItem();
 
@@ -1841,9 +1853,8 @@ bool Notepad_plus::fileDelete(BufferID id)
 	Buffer * buf = MainFileManager.getBufferByID(bufferID);
 	const TCHAR *fileNamePath = buf->getFullPathName();
 
-	winVer winVersion = (NppParameters::getInstance()).getWinVersion();
 	bool goAhead = true;
-	if (winVersion >= WV_WIN8 || winVersion == WV_UNKNOWN)
+	if (IsWindows8OrGreater())
 	{
 		// Windows 8 (and version afer?) has no system alert, so we ask user's confirmation
 		goAhead = (doDeleteOrNot(fileNamePath) == IDYES);
@@ -1883,19 +1894,20 @@ bool Notepad_plus::fileDelete(BufferID id)
 	return false;
 }
 
-void Notepad_plus::fileOpen()
+winrt::fire_and_forget Notepad_plus::fileOpen()
 {
-	CustomFileDialog fDlg(_pPublicInterface->getHSelf());
-	fDlg.setExtFilter(TEXT("All types"), TEXT(".*"));
-
-	setFileOpenSaveDlgFilters(fDlg, true);
+	//working WinRT file picker. Opens in Documents folder by default.
+	FileOpenPicker openPicker;
+    openPicker.as<IInitializeWithWindow>()->Initialize(_pPublicInterface->getHSelf());
+	openPicker.SuggestedStartLocation(PickerLocationId::ComputerFolder);
+	openPicker.FileTypeFilter().Append(L"*");
+	IVectorView<StorageFile> files = co_await openPicker.PickMultipleFilesAsync();
 
 	BufferID lastOpened = BUFFER_INVALID;
-	const auto& fns = fDlg.doOpenMultiFilesDlg();
-	size_t sz = fns.size();
-	for (size_t i = 0 ; i < sz ; ++i)
+	auto sz = files.Size();
+	for (auto file : files)
 	{
-		BufferID test = doOpen(fns.at(i).c_str(), fDlg.isReadOnly());
+		BufferID test = doOpen(file.Path().c_str(), file.Attributes() == FileAttributes::ReadOnly);
 		if (test != BUFFER_INVALID)
 			lastOpened = test;
 	}
@@ -2048,7 +2060,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 			if (!session._mainViewFiles[i]._foldStates.empty())
 			{
 				if (buf == _mainEditView.getCurrentBuffer()) // current document
-					// Set floding state in the current doccument
+					// Set flooding state in the current document
 					mainIndex2Update = static_cast<int32_t>(i);
 				else
 					// Set fold states in the buffer
@@ -2160,7 +2172,7 @@ bool Notepad_plus::loadSession(Session & session, bool isSnapshotMode, bool shou
 			if (!session._subViewFiles[k]._foldStates.empty())
 			{
 				if (buf == _subEditView.getCurrentBuffer()) // current document
-					// Set floding state in the current doccument
+					// Set flooding state in the current document
 					subIndex2Update = static_cast<int32_t>(k);
 				else
 					// Set fold states in the buffer

@@ -44,7 +44,6 @@ struct TaskListInfo {
 
 static HWND hWndServer = NULL;
 static HHOOK hook = NULL;
-static winVer windowsVersion = WV_UNKNOWN;
 
 static LRESULT CALLBACK hookProc(int nCode, WPARAM wParam, LPARAM lParam);
 
