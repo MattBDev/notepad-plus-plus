@@ -115,19 +115,20 @@ generic_string relativeFilePathToFullFilePath(const TCHAR *relativeFilePath)
 
 void writeFileContent(const TCHAR *file2write, const char *content2write)
 {
-	CFile file(file2write, CFile::Mode::WRITE);
+	Win32_IO_File file(file2write, Win32_IO_File::Mode::WRITE);
 
-	if (file.IsOpened())
-		file.Write(content2write, static_cast<unsigned long>(strlen(content2write)));
+	if (file.isOpened())
+		file.writeStr(content2write);
 }
 
 
 void writeLog(const TCHAR *logFileName, const char *log2write)
 {
-	CFile file(logFileName, CFile::Mode::APPEND);
+	Win32_IO_File file(logFileName, Win32_IO_File::Mode::APPEND);
 
-	if (file.IsOpened())
-		file.Write(log2write, static_cast<unsigned long>(strlen(log2write)));
+	if (file.isOpened())
+		file.writeStr(log2write);
+	fclose(f);
 }
 
 
@@ -971,7 +972,7 @@ generic_string GetLastErrorAsString(DWORD errorCode)
 	return errorMsg;
 }
 
-HWND CreateToolTip(int toolID, HWND hDlg, HINSTANCE hInst, const PTSTR pszText)
+HWND CreateToolTip(int toolID, HWND hDlg, HINSTANCE hInst, const PTSTR pszText, bool isRTL)
 {
 	if (!toolID || !hDlg || !pszText)
 	{
@@ -986,7 +987,7 @@ HWND CreateToolTip(int toolID, HWND hDlg, HINSTANCE hInst, const PTSTR pszText)
 	}
 
 	// Create the tooltip. g_hInst is the global instance handle.
-	HWND hwndTip = CreateWindowEx(0, TOOLTIPS_CLASS, NULL,
+	HWND hwndTip = CreateWindowEx(isRTL ? WS_EX_LAYOUTRTL : 0, TOOLTIPS_CLASS, NULL,
 		WS_POPUP | TTS_ALWAYSTIP | TTS_BALLOON,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT,

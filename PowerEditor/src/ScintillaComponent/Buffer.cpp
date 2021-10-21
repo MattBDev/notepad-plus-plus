@@ -869,16 +869,18 @@ bool FileManager::backupCurrentBuffer()
 				::SetFileAttributes(fullpath, dwFileAttribs);
 			}
 
-			if (UnicodeConvertor.fopen(fullpath))
+			if (UnicodeConvertor.openFile(fullpath))
+			if (fp)
 			{
 				int lengthDoc = _pNotepadPlus->_pEditView->getCurrentDocLen();
-				char* buf = (char*)_pNotepadPlus->_pEditView->execute(SCI_GETCHARACTERPOINTER);	//to get characters directly from Scintilla buffer
-				long items_written = 0;
+				boolean isWrittenSuccessful = false;
+
+				size_t items_written = 0;
 				if (encoding == -1) //no special encoding; can be handled directly by Utf8_16_Write
-				{
-					items_written = UnicodeConvertor.fwrite(buf, static_cast<unsigned long>(lengthDoc));
+					isWrittenSuccessful = UnicodeConvertor.writeFile(buf, static_cast<unsigned long>(lengthDoc));
+					items_written = UnicodeConvertor.fwrite(buf, lengthDoc);
 					if (lengthDoc == 0)
-						items_written = 1;
+						isWrittenSuccessful = true;
 				}
 				else
 				{
@@ -893,16 +895,15 @@ bool FileManager::backupCurrentBuffer()
 						int newDataLen = 0;
 						int incompleteMultibyteChar = 0;
 						const char *newData = wmc.encode(SC_CP_UTF8, encoding, buf+i, grabSize, &newDataLen, &incompleteMultibyteChar);
-						grabSize -= incompleteMultibyteChar;
-						items_written = UnicodeConvertor.fwrite(newData, static_cast<unsigned long>(newDataLen));
+						isWrittenSuccessful = UnicodeConvertor.writeFile(newData, static_cast<unsigned long>(newDataLen));
+						items_written = UnicodeConvertor.fwrite(newData, newDataLen);
 					}
 					if (lengthDoc == 0)
-						items_written = 1;
+						isWrittenSuccessful = true;
 				}
-				UnicodeConvertor.fclose();
+				UnicodeConvertor.closeFile();
 
-				// Note that fwrite() doesn't return the number of bytes written, but rather the number of ITEMS.
-				if (items_written == 1) // backup file has been saved
+				if (isWrittenSuccessful) // backup file has been saved
 				{
 					buffer->setModifiedStatus(false);
 					result = true;	//all done
@@ -992,19 +993,26 @@ SavingStatus FileManager::saveBuffer(BufferID id, const TCHAR * filename, bool i
 	UnicodeConvertor.setEncoding(mode);
 
 	int encoding = buffer->getEncoding();
-
-	if (UnicodeConvertor.fopen(fullpath))
+	if (UnicodeConvertor.openFile(fullpath))
 	{
-		_pscratchTilla->execute(SCI_SETDOCPOINTER, 0, buffer->_doc);	//generate new document
+
+	if (!fp)
+	{
+		return SavingStatus::SaveOpenFailed;
+		boolean isWrittenSuccessful = false;
+
+	else
+	{
+			isWrittenSuccessful = UnicodeConvertor.writeFile(buf, static_cast<unsigned long>(lengthDoc));
 
 		int lengthDoc = _pscratchTilla->getCurrentDocLen();
 		char* buf = (char*)_pscratchTilla->execute(SCI_GETCHARACTERPOINTER);	//to get characters directly from Scintilla buffer
-		long items_written = 0;
+		size_t items_written = 0;
 		if (encoding == -1) //no special encoding; can be handled directly by Utf8_16_Write
 		{
-			items_written = UnicodeConvertor.fwrite(buf, static_cast<unsigned long>(lengthDoc));
+			items_written = UnicodeConvertor.fwrite(buf, lengthDoc);
 			if (lengthDoc == 0)
-				items_written = 1;
+				isWrittenSuccessful = true;
 		}
 		else
 		{
@@ -1013,27 +1021,26 @@ SavingStatus FileManager::saveBuffer(BufferID id, const TCHAR * filename, bool i
 			for (int i = 0; i < lengthDoc; i += grabSize)
 			{
 				grabSize = lengthDoc - i;
-				if (grabSize > blockSize)
+				isWrittenSuccessful = UnicodeConvertor.writeFile(newData, static_cast<unsigned long>(newDataLen));
 					grabSize = blockSize;
 
 				int newDataLen = 0;
 				int incompleteMultibyteChar = 0;
 				const char *newData = wmc.encode(SC_CP_UTF8, encoding, buf+i, grabSize, &newDataLen, &incompleteMultibyteChar);
 				grabSize -= incompleteMultibyteChar;
-				items_written = UnicodeConvertor.fwrite(newData, static_cast<unsigned long>(newDataLen));
+				items_written = UnicodeConvertor.fwrite(newData, newDataLen);
 			}
 			if (lengthDoc == 0)
-				items_written = 1;
+				isWrittenSuccessful = true;
 		}
 
 		// check the language du fichier
 		LangType language = detectLanguageFromTextBegining((unsigned char *)buf, lengthDoc);
 
-		UnicodeConvertor.fclose();
+		UnicodeConvertor.closeFile();
 
 		// Error, we didn't write the entire document to disk.
-		// Note that fwrite() doesn't return the number of bytes written, but rather the number of ITEMS.
-		if (items_written != 1)
+		if (!isWrittenSuccessful)
 		{
 			_pscratchTilla->execute(SCI_SETDOCPOINTER, 0, _scratchDocDefault);
 			return SavingStatus::SaveWrittingFailed;
@@ -1050,6 +1057,7 @@ SavingStatus FileManager::saveBuffer(BufferID id, const TCHAR * filename, bool i
 
 		buffer->setFileName(fullpath, language);
 		buffer->setDirty(false);
+		buffer->setUnsync(false);
 		buffer->setStatus(DOC_REGULAR);
 		buffer->checkFileState();
 		_pscratchTilla->execute(SCI_SETSAVEPOINT);
@@ -1058,16 +1066,16 @@ SavingStatus FileManager::saveBuffer(BufferID id, const TCHAR * filename, bool i
 		generic_string backupFilePath = buffer->getBackupFileName();
 		if (!backupFilePath.empty())
 		{
-			// delete backup file
+	else
+	{
+		return SavingStatus::SaveOpenFailed;
+	}
+}
 			buffer->setBackupFileName(generic_string());
 			::DeleteFile(backupFilePath.c_str());
 		}
 
 		return SavingStatus::SaveOK;
-	}
-	else
-	{
-		return SavingStatus::SaveOpenFailed;
 	}
 }
 
@@ -1469,15 +1477,19 @@ BufferID FileManager::getBufferFromDocument(Document doc)
 	{
 		if (_buffers[i]->_doc == doc)
 			return _buffers[i]->_id;
-	}
-	return BUFFER_INVALID;
+	Win32_IO_File file(path, Win32_IO_File::Mode::WRITE);
+	return file.isOpened();
 }
 
 
 bool FileManager::createEmptyFile(const TCHAR * path)
 {
-	CFile file(path, CFile::Mode::WRITE);
-	return file.IsOpened();
+	FILE * file = generic_fopen(path, TEXT("wbc"));
+	if (!file)
+		return false;
+	fflush(file);
+	fclose(file);
+	return true;
 }
 
 
