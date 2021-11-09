@@ -102,10 +102,10 @@ IDI_SYNCV_ICON                  ICON      "icons/syncV_off.ico"
 IDI_SYNCV_DISABLE_ICON          ICON      "icons/syncV_dis.ico"
 IDI_SYNCH_ICON                  ICON      "icons/syncH_off.ico"
 IDI_SYNCH_DISABLE_ICON          ICON      "icons/syncH_dis.ico"
-IDI_VIEW_DOC_MAP_ICON           ICON      "icons/docMap_off.ico" 
-IDI_VIEW_DOCLIST_ICON           ICON      "icons/docList_off.ico" 
-IDI_VIEW_FUNCLIST_ICON          ICON      "icons/funcList_off.ico" 
-IDI_VIEW_FILEBROWSER_ICON       ICON      "icons/fileBrowser_off.ico" 
+IDI_VIEW_DOC_MAP_ICON           ICON      "icons/docMap_off.ico"
+IDI_VIEW_DOCLIST_ICON           ICON      "icons/docList_off.ico"
+IDI_VIEW_FUNCLIST_ICON          ICON      "icons/funcList_off.ico"
+IDI_VIEW_FILEBROWSER_ICON       ICON      "icons/fileBrowser_off.ico"
 IDI_VIEW_MONITORING_ICON        ICON      "icons/monitoring_off.ico"
 
 //
@@ -152,10 +152,10 @@ IDI_SYNCV_ICON2                 ICON      "icons/filledFluentUI/syncV_off.ico"
 IDI_SYNCV_DISABLE_ICON2         ICON      "icons/filledFluentUI/syncV_dis.ico"
 IDI_SYNCH_ICON2                 ICON      "icons/filledFluentUI/syncH_off.ico"
 IDI_SYNCH_DISABLE_ICON2         ICON      "icons/filledFluentUI/syncH_dis.ico"
-IDI_VIEW_DOC_MAP_ICON2          ICON      "icons/filledFluentUI/docMap_off.ico" 
-IDI_VIEW_DOCLIST_ICON2          ICON      "icons/filledFluentUI/docList_off.ico" 
-IDI_VIEW_FUNCLIST_ICON2         ICON      "icons/filledFluentUI/funcList_off.ico" 
-IDI_VIEW_FILEBROWSER_ICON2      ICON      "icons/filledFluentUI/fileBrowser_off.ico" 
+IDI_VIEW_DOC_MAP_ICON2          ICON      "icons/filledFluentUI/docMap_off.ico"
+IDI_VIEW_DOCLIST_ICON2          ICON      "icons/filledFluentUI/docList_off.ico"
+IDI_VIEW_FUNCLIST_ICON2         ICON      "icons/filledFluentUI/funcList_off.ico"
+IDI_VIEW_FILEBROWSER_ICON2      ICON      "icons/filledFluentUI/fileBrowser_off.ico"
 IDI_VIEW_MONITORING_ICON2       ICON      "icons/filledFluentUI/monitoring_off.ico"
 
 //
@@ -202,10 +202,10 @@ IDI_SYNCV_ICON_DM                  ICON      "icons/darkMode/toolbar/FluentUI/sy
 IDI_SYNCV_DISABLE_ICON_DM          ICON      "icons/darkMode/toolbar/FluentUI/syncV_dis.ico"
 IDI_SYNCH_ICON_DM                  ICON      "icons/darkMode/toolbar/FluentUI/syncH_off.ico"
 IDI_SYNCH_DISABLE_ICON_DM          ICON      "icons/darkMode/toolbar/FluentUI/syncH_dis.ico"
-IDI_VIEW_DOC_MAP_ICON_DM           ICON      "icons/darkMode/toolbar/FluentUI/docMap_off.ico" 
-IDI_VIEW_DOCLIST_ICON_DM           ICON      "icons/darkMode/toolbar/FluentUI/docList_off.ico" 
-IDI_VIEW_FUNCLIST_ICON_DM          ICON      "icons/darkMode/toolbar/FluentUI/funcList_off.ico" 
-IDI_VIEW_FILEBROWSER_ICON_DM       ICON      "icons/darkMode/toolbar/FluentUI/fileBrowser_off.ico" 
+IDI_VIEW_DOC_MAP_ICON_DM           ICON      "icons/darkMode/toolbar/FluentUI/docMap_off.ico"
+IDI_VIEW_DOCLIST_ICON_DM           ICON      "icons/darkMode/toolbar/FluentUI/docList_off.ico"
+IDI_VIEW_FUNCLIST_ICON_DM          ICON      "icons/darkMode/toolbar/FluentUI/funcList_off.ico"
+IDI_VIEW_FILEBROWSER_ICON_DM       ICON      "icons/darkMode/toolbar/FluentUI/fileBrowser_off.ico"
 IDI_VIEW_MONITORING_ICON_DM        ICON      "icons/darkMode/toolbar/FluentUI/monitoring_off.ico"
 
 //
@@ -252,10 +252,10 @@ IDI_SYNCV_ICON_DM2                 ICON      "icons/darkMode/toolbar/filledFluen
 IDI_SYNCV_DISABLE_ICON_DM2         ICON      "icons/darkMode/toolbar/filledFluentUI/syncV_dis.ico"
 IDI_SYNCH_ICON_DM2                 ICON      "icons/darkMode/toolbar/filledFluentUI/syncH_off.ico"
 IDI_SYNCH_DISABLE_ICON_DM2         ICON      "icons/darkMode/toolbar/filledFluentUI/syncH_dis.ico"
-IDI_VIEW_DOC_MAP_ICON_DM2          ICON      "icons/darkMode/toolbar/filledFluentUI/docMap_off.ico" 
-IDI_VIEW_DOCLIST_ICON_DM2          ICON      "icons/darkMode/toolbar/filledFluentUI/docList_off.ico" 
-IDI_VIEW_FUNCLIST_ICON_DM2         ICON      "icons/darkMode/toolbar/filledFluentUI/funcList_off.ico" 
-IDI_VIEW_FILEBROWSER_ICON_DM2      ICON      "icons/darkMode/toolbar/filledFluentUI/fileBrowser_off.ico" 
+IDI_VIEW_DOC_MAP_ICON_DM2          ICON      "icons/darkMode/toolbar/filledFluentUI/docMap_off.ico"
+IDI_VIEW_DOCLIST_ICON_DM2          ICON      "icons/darkMode/toolbar/filledFluentUI/docList_off.ico"
+IDI_VIEW_FUNCLIST_ICON_DM2         ICON      "icons/darkMode/toolbar/filledFluentUI/funcList_off.ico"
+IDI_VIEW_FILEBROWSER_ICON_DM2      ICON      "icons/darkMode/toolbar/filledFluentUI/fileBrowser_off.ico"
 IDI_VIEW_MONITORING_ICON_DM2       ICON      "icons/darkMode/toolbar/filledFluentUI/monitoring_off.ico"
 
 
@@ -673,7 +673,7 @@ BEGIN
             MENUITEM "Move to New Instance",    IDM_VIEW_GOTO_NEW_INSTANCE
             MENUITEM "Open in New Instance",    IDM_VIEW_LOAD_IN_NEW_INSTANCE
         END
-        
+
         POPUP "Tab"
         BEGIN
             MENUITEM "1st Tab",                 IDM_VIEW_TAB1
@@ -1143,7 +1143,7 @@ BEGIN
             MENUITEM "Generate from selection into clipboard", IDM_TOOL_SHA256_GENERATEINTOCLIPBOARD
         END
     END
-    
+
     POPUP "&Macro"
     BEGIN
         MENUITEM "Start Re&cording",                   IDM_MACRO_STARTRECORDINGMACRO
@@ -1192,11 +1192,12 @@ BEGIN
     END
 END
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 271, 240
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_BORDER | WS_SYSMENU
-FONT 8, TEXT("MS Shell Dlg"), 0, 0, 0x1
+// x, y, width, height
+IDD_ABOUTBOX DIALOGEX 0, 0, 288, 307
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 9, "Segoe UI", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_BUILD_DATETIME,150,2,150,10, ES_READONLY | NOT WS_BORDER
+    //EDITTEXT        IDC_BUILD_DATETIME,150,2,150,10, ES_READONLY | NOT WS_BORDER
     CONTROL         "", IDI_NPPABOUT_LOGO,"Static",SS_OWNERDRAW,10,5,128,128
     LTEXT           NOTEPAD_PLUS_VERSION, IDC_STATIC,85,25,140,11
     LTEXT           "bit",IDC_VERSION_BIT,160,25,140,11
@@ -1206,17 +1207,16 @@ BEGIN
     //LTEXT           "pour Samuel Paty",IDC_AUTHOR_NAME,70,32,80,8
     LTEXT           "Home:",IDC_STATIC,21,58,47,8
     LTEXT           "https://notepad-plus-plus.org/",IDC_HOME_ADDR,50,58,126,8
-    GROUPBOX        "GNU General Public Licence",IDC_STATIC,19,75,231,131,BS_CENTER
+    // GROUPBOX        "GNU General Public Licence",IDC_STATIC,19,75,231,131,BS_CENTER
     DEFPUSHBUTTON   "OK",IDOK,106,215,50,14,BS_FLAT
     // IDC_LICENCE_EDIT should be the last line, don't know why
-    EDITTEXT        IDC_LICENCE_EDIT,31,99,209,96,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | NOT WS_BORDER | WS_VSCROLL
 END
 
 IDD_DEBUGINFOBOX DIALOGEX 0, 0, 271, 200
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_DLGMODALFRAME | WS_EX_WINDOWEDGE
 CAPTION "Debug Info"
-FONT 8, TEXT("MS Shell Dlg"), 0, 0, 0x1
+FONT 9, "Segoe UI", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_DEBUGINFO_EDIT,31,20,220,96,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | NOT WS_BORDER | WS_VSCROLL
     LTEXT           "Copy debug info into clipboard",IDC_DEBUGINFO_COPYLINK,31,120,126,8

@@ -24,6 +24,21 @@
 #include "regExtDlg.h"
 #include "WordStyleDlg.h"
 
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.system.h>
+#include <winrt/windows.ui.xaml.hosting.h>
+#include <windows.ui.xaml.hosting.desktopwindowxamlsource.h>
+#include "winrt/Windows.UI.Xaml.Controls.h"
+#include "winrt/Windows.UI.Xaml.Media.h"
+#undef GetCurrentTime
+
+using namespace winrt;
+using namespace Windows::UI;
+using namespace Windows::UI::Composition;
+using namespace Windows::UI::Xaml::Hosting;
+using namespace Windows::Foundation::Numerics;
+
+
 class MiscSubDlg : public StaticDialog
 {
 public :
@@ -140,7 +155,7 @@ public :
 	};
 
 private :
-    LexerStylerArray _lsArray;
+	LexerStylerArray _lsArray;
 	URLCtrl _tabSizeVal;
 	INT_PTR CALLBACK run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam);
 	std::vector<LangMenuItem> _langList;
@@ -256,20 +271,31 @@ class PreferenceDlg : public StaticDialog
 friend class NativeLangSpeaker;
 friend class Notepad_plus;
 public :
-	PreferenceDlg() = default;
+	PreferenceDlg() {
+		// The call to winrt::init_apartment initializes COM; by default, in a multithreaded apartment.
+		winrt::init_apartment(apartment_type::single_threaded);
 
-    void init(HINSTANCE hInst, HWND parent)	{
-        Window::init(hInst, parent);
+		// Initialize the XAML framework's core window for the current thread.
+		WindowsXamlManager winxamlmanager = WindowsXamlManager::InitializeForCurrentThread();
+
+		// This DesktopWindowXamlSource is the object that enables a non-UWP desktop application 
+		// to host WinRT XAML controls in any UI element that is associated with a window handle (HWND).
+		_desktopWindowXamlSource = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+
 	};
 
-    void doDialog(bool isRTL = false) {
-    	if (!isCreated())
+	void init(HINSTANCE hInst, HWND parent)	{
+		Window::init(hInst, parent);
+	};
+
+	void doDialog(bool isRTL = false) {
+		if (!isCreated())
 		{
 			create(IDD_PREFERENCE_BOX, isRTL);
 			goToCenter();
 		}
-	    display();
-    };
+		display();
+	};
 	bool renameDialogTitle(const TCHAR *internalName, const TCHAR *newName);
 	
 	int getListSelectedIndex() const {
@@ -282,6 +308,7 @@ public :
 	virtual void destroy();
 
 private :
+	DesktopWindowXamlSource _desktopWindowXamlSource{ nullptr };
 	INT_PTR CALLBACK run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam);
 	void makeCategoryList();
 	int32_t getIndexFromName(const TCHAR *name) const;

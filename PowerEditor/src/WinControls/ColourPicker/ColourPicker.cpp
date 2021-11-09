@@ -27,7 +27,7 @@ void ColourPicker::init(HINSTANCE hInst, HWND parent)
 	_hSelf = ::CreateWindowEx(
 		0,
 		TEXT("Button"),
-		TEXT("F"),
+		TEXT("ColorPicker"),
 		WS_CHILD |  WS_VISIBLE,
 		0, 0, 25, 25,
 		_hParent, NULL, _hInst, (LPVOID)0);
@@ -59,7 +59,7 @@ void ColourPicker::drawBackground(HDC hDC)
 	getClientRect(rc);
 	hbrush = ::CreateSolidBrush(_currentColour);
 	HGDIOBJ oldObj = ::SelectObject(hDC, hbrush);
-	HPEN holdPen = nullptr;
+	HPEN holdPen = NULL;
 	if (NppDarkMode::isEnabled())
 	{
 		holdPen = static_cast<HPEN>(::SelectObject(hDC, NppDarkMode::getEdgePen()));
@@ -176,7 +176,7 @@ LRESULT ColourPicker::runProc(UINT Message, WPARAM wParam, LPARAM lParam)
 
 		case WM_ENABLE:
 		{
-			if ((BOOL)wParam == FALSE)
+			if ((BOOL)wParam == false)
 			{
 				_currentColour = NppDarkMode::isEnabled() ? NppDarkMode::getDarkerBackgroundColor() : ::GetSysColor(COLOR_3DFACE);
 				redraw();

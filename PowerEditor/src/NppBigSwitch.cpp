@@ -300,7 +300,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 		{
 			FindersInfo *findInFolderInfo = reinterpret_cast<FindersInfo *>(wParam);
 			Finder * newFinder = _findReplaceDlg.createFinder();
-			
+
 			findInFolderInfo->_pDestFinder = newFinder;
 			bool isOK = findInFinderFiles(findInFolderInfo);
 			return isOK;
@@ -326,7 +326,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
 			bool isFirstTime = !_findReplaceDlg.isCreated();
 			_findReplaceDlg.doDialog(FIND_DLG, _nativeLangSpeaker.isRTL());
-			
+
 			const NppGUI & nppGui = nppParam.getNppGUI();
 			if (!nppGui._stopFillingFindField)
 			{
@@ -554,7 +554,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 			{
 				_pDocumentListPanel->updateTabOrder();
 			}
-			
+
 			BufferID id = _pEditView->getCurrentBufferID();
 
 			// Notify plugins that current file is about to be closed
@@ -658,7 +658,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 					}
 					else
 					{
-#ifdef DEBUG 
+#ifdef DEBUG
 						printStr(TEXT("sizeof(CmdLineParams) != cmdLineParamsSize\rCmdLineParams is formed by an instance of another version,\rwhereas your CmdLineParams has been modified in this instance."));
 #endif
 					}
@@ -1930,7 +1930,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 					//User cancelled the shutdown
 					scnN.nmhdr.code = NPPN_CANCELSHUTDOWN;
 					_pluginsManager.notify(&scnN);
-					
+
 					if (isSnapshotMode)
 						::LockWindowUpdate(nullptr);
 					return FALSE;
@@ -1948,7 +1948,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 				_pluginsManager.notify(&scnN);
 
 
-				saveScintillasZoom(); 
+				saveScintillasZoom();
 				saveGUIParams(); //writeGUIParams writeScintillaParams
 				saveFindHistory(); //writeFindHistory
 				_lastRecentFileList.saveLRFL(); //writeRecentFileHistorySettings, writeHistory
@@ -2005,7 +2005,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
 			// _isEndingSessionButNotReady is true means WM_QUERYENDSESSION is sent but no time to finish saving data
             // then WM_ENDSESSION is sent with wParam == FALSE - Notepad++ should exit in this case
-			if (_isEndingSessionButNotReady) 
+			if (_isEndingSessionButNotReady)
 				::DestroyWindow(hwnd);
 
 			return TRUE;
@@ -2508,7 +2508,7 @@ LRESULT Notepad_plus::process(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 		// NEW BEHAVIOUR:
 		// No more file "allowAppDataPlugins.xml"
 		// if doLocal - not allowed. Otherwise - allowed.
-		case NPPM_GETAPPDATAPLUGINSALLOWED: 
+		case NPPM_GETAPPDATAPLUGINSALLOWED:
 		{
 			const TCHAR *appDataNpp = nppParam.getAppDataNppDir();
 			if (appDataNpp[0]) // if not doLocal

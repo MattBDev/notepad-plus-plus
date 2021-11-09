@@ -23,6 +23,20 @@
 #include "Common.h"
 #include <vector>
 
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.system.h>
+#include <winrt/windows.ui.xaml.hosting.h>
+#include <windows.ui.xaml.hosting.desktopwindowxamlsource.h>
+#include "winrt/Windows.UI.Xaml.Controls.h"
+#include "winrt/Windows.UI.Xaml.Media.h"
+#undef GetCurrentTime
+
+using namespace winrt;
+using namespace Windows::UI;
+using namespace Windows::UI::Composition;
+using namespace Windows::UI::Xaml::Hosting;
+using namespace Windows::Foundation::Numerics;
+
 struct StatusBarSubclassInfo;
 
 
@@ -49,6 +63,7 @@ private:
 	virtual void init(HINSTANCE hInst, HWND hPere) override;
 
 private:
+	DesktopWindowXamlSource _desktopWindowXamlSource{ nullptr };
     std::vector<int> _partWidthArray;
 	int *_lpParts = nullptr;
 	generic_string _lastSetText;

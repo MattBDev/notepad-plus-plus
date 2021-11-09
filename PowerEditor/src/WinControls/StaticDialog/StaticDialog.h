@@ -17,33 +17,40 @@
 #include "Notepad_plus_msgs.h"
 #include "Window.h"
 
-typedef HRESULT (WINAPI * ETDTProc) (HWND, DWORD);
+typedef HRESULT(WINAPI* ETDTProc) (HWND, DWORD);
 
 enum class PosAlign { left, right, top, bottom };
 
 struct DLGTEMPLATEEX
 {
-      WORD   dlgVer;
-      WORD   signature;
-      DWORD  helpID;
-      DWORD  exStyle;
-      DWORD  style;
-      WORD   cDlgItems;
-      short  x;
-      short  y;
-      short  cx;
-      short  cy;
-      // The structure has more fields but are variable length
+	/**
+	 * The version number of the extended dialog box template. This member must be set to 1.
+	 */
+	WORD   dlgVer;
+	WORD   signature;
+	/**
+	* \brief The help context identifier for the dialog box window. When the system sends a WM_HELP message, it passes this value in the wContextId member of the HELPINFO structure.
+	*/
+	DWORD  helpID;
+	DWORD  exStyle;
+	DWORD  style;
+	WORD   cDlgItems;
+	short  x;
+	short  y;
+	short  cx;
+	short  cy;
+	// The structure has more fields but are variable length
 };
 
 class StaticDialog : public Window
 {
-public :
+public:
 	virtual ~StaticDialog();
+
 
 	virtual void create(int dialogID, bool isRTL = false, bool msgDestParent = true);
 
-    virtual bool isCreated() const {
+	virtual bool isCreated() const {
 		return (_hSelf != NULL);
 	}
 
@@ -65,12 +72,12 @@ public :
 		::SendDlgItemMessage(_hSelf, checkControlID, BM_SETCHECK, checkOrNot ? BST_CHECKED : BST_UNCHECKED, 0);
 	}
 
-    virtual void destroy() override;
+	virtual void destroy() override;
 
 protected:
 	RECT _rc;
 	static INT_PTR CALLBACK dlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 	virtual INT_PTR CALLBACK run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam) = 0;
 
-	HGLOBAL makeRTLResource(int dialogID, DLGTEMPLATE **ppMyDlgTemplate);
+	HGLOBAL makeRTLResource(int dialogID, DLGTEMPLATE** ppMyDlgTemplate);
 };

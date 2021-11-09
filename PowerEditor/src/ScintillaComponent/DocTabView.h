@@ -29,7 +29,7 @@ class DocTabView : public TabBarPlus
 public :
 	DocTabView():TabBarPlus(), _pView(NULL) {};
 	virtual ~DocTabView(){};
-	
+
 	virtual void destroy() {
 		TabBarPlus::destroy();
 	};
@@ -91,7 +91,7 @@ public :
 	};
 
 private :
-	ScintillaEditView *_pView;
+	ScintillaEditView *_pView = nullptr;
 	static bool _hideTabBarStatus;
 
 	std::vector<IconList *> _pIconListVector;

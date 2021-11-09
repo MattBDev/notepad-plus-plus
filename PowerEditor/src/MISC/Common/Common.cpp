@@ -79,7 +79,7 @@ char getDriveLetter()
 	TCHAR current[MAX_PATH];
 
 	::GetCurrentDirectory(MAX_PATH, current);
-	int driveNbr = ::PathGetDriveNumber(current);
+	int driveNbr = ::PathGetDriveNumberW(current);
 	if (driveNbr != -1)
 		drive = 'A' + char(driveNbr);
 
@@ -128,7 +128,6 @@ void writeLog(const TCHAR *logFileName, const char *log2write)
 
 	if (file.isOpened())
 		file.writeStr(log2write);
-	fclose(f);
 }
 
 
@@ -687,7 +686,7 @@ COLORREF getCtrlBgColor(HWND hWnd)
 
 generic_string stringToUpper(generic_string strToConvert)
 {
-    std::transform(strToConvert.begin(), strToConvert.end(), strToConvert.begin(), 
+    std::transform(strToConvert.begin(), strToConvert.end(), strToConvert.begin(),
         [](TCHAR ch){ return static_cast<TCHAR>(_totupper(ch)); }
     );
     return strToConvert;
@@ -920,17 +919,17 @@ bool str2Clipboard(const generic_string &str2cpy, HWND hwnd)
 bool matchInList(const TCHAR *fileName, const std::vector<generic_string> & patterns)
 {
 	bool is_matched = false;
-	for (size_t i = 0, len = patterns.size(); i < len; ++i)
+	for (auto i : patterns)
 	{
-		if (patterns[i].length() > 1 && patterns[i][0] == '!')
+		if (i.length() > 1 && i[0] == '!')
 		{
-			if (PathMatchSpec(fileName, patterns[i].c_str() + 1))
+			if (PathMatchSpec(fileName, i.c_str() + 1))
 				return false;
 
 			continue;
-		} 
+		}
 
-		if (PathMatchSpec(fileName, patterns[i].c_str()))
+		if (PathMatchSpec(fileName, i.c_str()))
 			is_matched = true;
 	}
 	return is_matched;
@@ -1129,7 +1128,7 @@ bool isCertificateValidated(const generic_string & fullFilePath, const generic_s
 			throw errorMessage;
 		}
 
-		// Search for the signer certificate in the temporary 
+		// Search for the signer certificate in the temporary
 		// certificate store.
 		CertInfo.Issuer = pSignerInfo->Issuer;
 		CertInfo.SerialNumber = pSignerInfo->SerialNumber;
@@ -1212,11 +1211,11 @@ bool isAssoCommandExisting(LPCTSTR FullPathName)
 
 		// check if association exist
 		hres = AssocQueryString(ASSOCF_VERIFY|ASSOCF_INIT_IGNOREUNKNOWN, ASSOCSTR_COMMAND, ext, NULL, buffer, &bufferLen);
-        
+
         isAssoCommandExisting = (hres == S_OK)                  // check if association exist and no error
 			&& (buffer != NULL)                                 // check if buffer is not NULL
 			&& (wcsstr(buffer, TEXT("notepad++.exe")) == NULL); // check association with notepad++
-        
+
 	}
 	return isAssoCommandExisting;
 }
@@ -1261,7 +1260,7 @@ bool deleteFileOrFolder(const generic_string& f2delete)
 	return (res == 0);
 }
 
-// Get a vector of full file paths in a given folder. File extension type filter should be *.*, *.xml, *.dll... according the type of file you want to get.  
+// Get a vector of full file paths in a given folder. File extension type filter should be *.*, *.xml, *.dll... according the type of file you want to get.
 void getFilesInFolder(std::vector<generic_string>& files, const generic_string& extTypeFilter, const generic_string& inFolder)
 {
 	generic_string filter = inFolder;
@@ -1417,7 +1416,7 @@ generic_string getDateTimeStrFrom(const generic_string& dateTimeFormat, const SY
 	ret = GetTimeFormatEx(localeName, flags, &st, newFormat.c_str(), buffer, bufferSize);
 	if (ret != 0)
 	{
-		// 3. Format the date (d/y/g/M). 
+		// 3. Format the date (d/y/g/M).
 		// Now use the buffer as a format string to process the format specifiers not recognized by GetTimeFormatEx().
 		ret = GetDateFormatEx(localeName, flags, &st, buffer, buffer, bufferSize, nullptr);
 	}

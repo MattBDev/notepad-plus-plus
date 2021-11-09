@@ -229,7 +229,6 @@ public :
 	static FindOption* _env;
 	FindReplaceDlg() {
 		_uniFileName = new char[(_fileNameLenMax + 3) * 2];
-		_winVer = (NppParameters::getInstance()).getWinVersion();
 		_env = &_options;
 	};
 
@@ -390,7 +389,6 @@ private :
 	char *_uniFileName;
 
 	TabBar _tab;
-	winVer _winVer = winVer::WV_UNKNOWN;
 	StatusBar _statusBar;
 	FindStatus _statusbarFindStatus;
 

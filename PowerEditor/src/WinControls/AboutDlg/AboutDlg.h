@@ -31,6 +31,7 @@
 #include <winrt/windows.ui.xaml.controls.h>
 #include <winrt/Windows.ui.xaml.media.h>
 #include <winrt/Windows.UI.Core.h>
+#include <winrt/MyUWPApp.h>
 
 using namespace winrt;
 using namespace Windows::UI;
@@ -83,6 +84,7 @@ protected :
 
 private :
 	DesktopWindowXamlSource _desktopWindowXamlSource{ nullptr };
+	winrt::MyUWPApp::MyUserControl _myUserControl{ nullptr };
     URLCtrl _emailLink;
     URLCtrl _pageLink;
 };

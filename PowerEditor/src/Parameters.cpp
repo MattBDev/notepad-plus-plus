@@ -760,7 +760,7 @@ winVer NppParameters::getWindowsVersion()
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	BOOL bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *)&osvi);
+	bool bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *)&osvi);
 	if (!bOsVersionInfoEx)
 	{
 		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);

@@ -26,6 +26,8 @@ using namespace winrt::Windows::UI::Xaml::Media::Imaging;
 
 #pragma warning(disable : 4996) // for GetVersion()
 
+void AdjustLayout(HWND);
+
 INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -38,16 +40,17 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 				// Parent the DesktopWindowXamlSource object to current window
 				check_hresult(interop->AttachToWindow(_hSelf));
 
-				// This Hwnd will be the window handler for the Xaml Island: A child window that contains Xaml.  
+				// This Hwnd will be the window handler for the Xaml Island: A child window that contains Xaml.
 				HWND hWndXamlIsland = nullptr;
-                // Get the new child window's hwnd 
+                // Get the new child window's hwnd
                 interop->get_WindowHandle(&hWndXamlIsland);
-				RECT v;
-				::GetWindowRect(_hSelf, &v);
-				int width = v.right - v.left;
-				int height = v.bottom - v.top;
-                ::SetWindowPos(hWndXamlIsland, nullptr, 0, 0, width, height, SWP_SHOWWINDOW);
-                // Create the XAML content.
+				RECT windowRect;
+				::GetWindowRect(_hSelf, &windowRect);
+
+                ::SetWindowPos(hWndXamlIsland, nullptr, 0, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, SWP_SHOWWINDOW);
+                _myUserControl = winrt::MyUWPApp::MyUserControl();
+				_desktopWindowXamlSource.Content(_myUserControl);
+				// Create the XAML content.
                 Windows::UI::Xaml::Controls::RelativePanel xamlContainer;
 
 				generic_string buildTime = TEXT("Build time : ");
@@ -64,7 +67,7 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
                 tb.FontSize(14);
 
 				xamlContainer.Padding(winrt::Windows::UI::Xaml::ThicknessHelper::FromUniformLength(10));
-				
+
 				/*
 				winrt::Windows::UI::Xaml::Controls::Image img;
 				BitmapImage bitmapImage;
@@ -81,7 +84,7 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 				xamlContainer.SetAlignTopWithPanel(tb, true);
 
 				xamlContainer.UpdateLayout();
-				_desktopWindowXamlSource.Content(xamlContainer);
+				//_desktopWindowXamlSource.Content(xamlContainer);
 			}
 			NppDarkMode::autoSubclassAndThemeChildControls(_hSelf);
 
@@ -94,14 +97,14 @@ INT_PTR CALLBACK AboutDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 			buildTime +=  wmc.char2wchar(__TIME__, CP_ACP);
 
 			NppParameters& nppParam = NppParameters::getInstance();
-			LPCTSTR bitness = nppParam.archType() == IMAGE_FILE_MACHINE_I386 ? TEXT("(32-bit)") : (nppParam.archType() == IMAGE_FILE_MACHINE_AMD64 ? TEXT("(64-bit)") : TEXT("(ARM 64-bit)"));
+			LPCTSTR bitness = nppParam.archType() == IMAGE_FILE_MACHINE_AMD64 ? TEXT("(64-bit)") : TEXT("(ARM 64-bit)");
 			::SetDlgItemText(_hSelf, IDC_VERSION_BIT, bitness);
 
 			::SendMessage(compileDateHandle, WM_SETTEXT, 0, reinterpret_cast<LPARAM>(buildTime.c_str()));
 			::EnableWindow(compileDateHandle, FALSE);
 
-            HWND licenceEditHandle = ::GetDlgItem(_hSelf, IDC_LICENCE_EDIT);
-			::SendMessage(licenceEditHandle, WM_SETTEXT, 0, reinterpret_cast<LPARAM>(LICENCE_TXT));
+			//HWND licenceEditHandle = ::GetDlgItem(_hSelf, IDC_LICENCE_EDIT);
+			//::SendMessage(licenceEditHandle, WM_SETTEXT, 0, reinterpret_cast<LPARAM>(LICENCE_TXT));
 
             _pageLink.init(_hInst, _hSelf);
             _pageLink.create(::GetDlgItem(_hSelf, IDC_HOME_ADDR), TEXT("https://notepad-plus-plus.org/"));
@@ -172,11 +175,11 @@ void AboutDlg::doDialog()
 		if (_desktopWindowXamlSource == nullptr) {
 				// The call to winrt::init_apartment initializes COM; by default, in a multithreaded apartment.
 				winrt::init_apartment(apartment_type::single_threaded);
-				
+
 				// Initialize the XAML framework's core window for the current thread.
 				WindowsXamlManager winxamlmanager = WindowsXamlManager::InitializeForCurrentThread();
-				
-				// This DesktopWindowXamlSource is the object that enables a non-UWP desktop application 
+
+				// This DesktopWindowXamlSource is the object that enables a non-UWP desktop application
 				// to host WinRT XAML controls in any UI element that is associated with a window handle (HWND).
 				_desktopWindowXamlSource = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
 		}
@@ -252,7 +255,7 @@ INT_PTR CALLBACK DebugInfoDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM /
 			// OS information
 			HKEY hKey;
 			DWORD dataSize = 0;
-			
+
 			TCHAR szProductName[96] = {'\0'};
 			TCHAR szCurrentBuildNumber[32] = {'\0'};
 			TCHAR szReleaseId[32] = {'\0'};
@@ -269,17 +272,17 @@ INT_PTR CALLBACK DebugInfoDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM /
 				dataSize = sizeof(szReleaseId);
 				RegQueryValueExW(hKey, TEXT("ReleaseId"), NULL, NULL, reinterpret_cast<LPBYTE>(szReleaseId), &dataSize);
 				szReleaseId[sizeof(szReleaseId) / sizeof(TCHAR) - 1] = '\0';
-				
+
 				dataSize = sizeof(szCurrentBuildNumber);
 				RegQueryValueExW(hKey, TEXT("CurrentBuildNumber"), NULL, NULL, reinterpret_cast<LPBYTE>(szCurrentBuildNumber), &dataSize);
 				szCurrentBuildNumber[sizeof(szCurrentBuildNumber) / sizeof(TCHAR) - 1] = '\0';
-				
+
 				dataSize = sizeof(DWORD);
 				if (RegQueryValueExW(hKey, TEXT("UBR"), NULL, NULL, reinterpret_cast<LPBYTE>(&dwUBR), &dataSize) == ERROR_SUCCESS)
 				{
 					generic_sprintf(szUBR, TEXT("%u"), dwUBR);
 				}
-				
+
 				RegCloseKey(hKey);
 			}
 
@@ -296,14 +299,14 @@ INT_PTR CALLBACK DebugInfoDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM /
 					generic_sprintf(szCurrentBuildNumber, TEXT("%u"), HIWORD(dwVersion));
 				}
 			}
-			
+
 			_debugInfoStr += TEXT("OS Name : ");
 			_debugInfoStr += szProductName;
 			_debugInfoStr += TEXT(" (");
 			_debugInfoStr += (NppParameters::getInstance()).getWinVerBitStr();
 			_debugInfoStr += TEXT(") ");
 			_debugInfoStr += TEXT("\r\n");
-			
+
 			if (szReleaseId[0] != '\0')
 			{
 				_debugInfoStr += TEXT("OS Version : ");
@@ -421,7 +424,7 @@ void DebugInfoDlg::doDialog()
 
 void DoSaveOrNotBox::doDialog(bool isRTL)
 {
-	
+
 	if (isRTL)
 	{
 		DLGTEMPLATE *pMyDlgTemplate = NULL;

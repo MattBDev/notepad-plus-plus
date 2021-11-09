@@ -1,0 +1,20 @@
+{
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false,
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "files.associations": {
+        "unordered_set": "cpp",
+        "charconv": "cpp",
+        "ios": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "*.rh": "cpp"
+    },
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.cStandard": "c17",
+    "C_Cpp.default.intelliSenseMode": "windows-msvc-x64",
+    "C_Cpp.experimentalFeatures": "Enabled"
+}

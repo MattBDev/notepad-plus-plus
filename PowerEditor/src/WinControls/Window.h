@@ -37,13 +37,23 @@ public:
 
 	virtual void destroy() = 0;
 
+	/**
+	 * @brief Sets the window's show state.
+	 *
+	 * @param toShow if true it will activate the window and displays it in its current size and position.
+	 */
 	virtual void display(bool toShow = true) const
 	{
 		::ShowWindow(_hSelf, toShow ? SW_SHOW : SW_HIDE);
 	}
 
 
-	virtual void reSizeTo(RECT & rc) // should NEVER be const !!!
+	/**
+	 * @brief Changes the position and dimensions of the specified window. For a top-level window, the position and dimensions are relative to the upper-left corner of the screen. For a child window, they are relative to the upper-left corner of the parent window's client area.
+	 *
+	 * @param rc
+	 */
+	virtual void reSizeTo(RECT& rc) // should NEVER be const !!!
 	{
 		::MoveWindow(_hSelf, rc.left, rc.top, rc.right, rc.bottom, TRUE);
 		redraw();
@@ -64,13 +74,30 @@ public:
 			::UpdateWindow(_hSelf);
 	}
 
-
-    virtual void getClientRect(RECT & rc) const
+	/**
+	 * @brief Retrieves the coordinates of a window's client area. The client coordinates
+	 *  specify the upper-left and lower-right corners of the client area. Because client
+	 *  coordinates are relative to the upper-left corner of a window's client area, the
+	 *  coordinates of the upper-left corner are (0,0).
+	 *
+	 * @param rc A pointer to a RECT structure that receives the client coordinates.
+	 *  The left and top members are zero. The right and bottom members contain the
+	 *  width and height of the window.
+	 */
+	virtual void getClientRect(RECT& rc) const
 	{
 		::GetClientRect(_hSelf, &rc);
 	}
 
-	virtual void getWindowRect(RECT & rc) const
+	/**
+	 * @brief Retrieves the dimensions of the bounding rectangle of the window.
+	 *  The dimensions are given in screen coordinates that are relative to the upper-left
+	 *  corner of the screen.
+	 *
+	 * @param rc A pointer to a RECT structure that receives the screen coordinates of the
+	 *  upper-left and lower-right corners of the window.
+	 */
+	virtual void getWindowRect(RECT& rc) const
 	{
 		::GetWindowRect(_hSelf, &rc);
 	}
@@ -91,9 +118,17 @@ public:
 		return 0;
 	}
 
+	/**
+	 * @brief Determines the visibility state of the window.
+	 *
+	 * @return If the window, its parent window, its parent's parent window,
+	 *  and so forth, have the WS_VISIBLE style, the return value is true. Otherwise, the return
+	 *  value is false. Because the return value specifies whether the window has the WS_VISIBLE style,
+	 *  it may be true even if the window is totally obscured by other windows.
+	 */
 	virtual bool isVisible() const
 	{
-    	return ::IsWindowVisible(_hSelf) != 0;
+		return ::IsWindowVisible(_hSelf) != 0;
 	}
 
 	HWND getHSelf() const
@@ -101,15 +136,24 @@ public:
 		return _hSelf;
 	}
 
+	/**
+	* @brief Sets the keyboard focus to the window.
+	*
+	* @return If the function succeeds, the return value is the handle to the window that previously had the keyboard focus.
+	*/
 	HWND getHParent() const {
 		return _hParent;
 	}
 
+	/**
+	 * @brief Get the keyboard focus to the window.
+	 *
+	 */
 	void getFocus() const {
 		::SetFocus(_hSelf);
 	}
 
-    HINSTANCE getHinst() const
+	HINSTANCE getHinst() const
 	{
 		//assert(_hInst != 0);
 		return _hInst;

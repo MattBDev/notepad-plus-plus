@@ -1226,7 +1226,7 @@ namespace NppDarkMode
 
 					SetTextColor(hdc, (bHot || (i == nSelTab) ) ? NppDarkMode::getTextColor() : NppDarkMode::getDarkerTextColor());
 
-					// for consistency getBackgroundBrush() 
+					// for consistency getBackgroundBrush()
 					// would be better, than getSofterBackgroundBrush(),
 					// however default getBackgroundBrush() has same color
 					// as getDarkerBackgroundBrush()
@@ -1310,7 +1310,7 @@ namespace NppDarkMode
 
 				PAINTSTRUCT ps;
 				auto hdc = ::BeginPaint(hWnd, &ps);
-				
+
 				auto holdPen = static_cast<HPEN>(::SelectObject(hdc, NppDarkMode::getEdgePen()));
 				::SelectObject(hdc, reinterpret_cast<HFONT>(::SendMessage(hWnd, WM_GETFONT, 0, 0)));
 				::SetBkColor(hdc, NppDarkMode::getBackgroundColor());
@@ -1507,6 +1507,11 @@ namespace NppDarkMode
 		autoSubclassAndThemeChildControls(hwndParent, false, true);
 	}
 
+	/**
+	 * @brief Set the Dark Title Bar object
+	 *
+	 * @param hwnd the handle of the window 
+	 */
 	void setDarkTitleBar(HWND hwnd)
 	{
 		NppDarkMode::allowDarkModeForWindow(hwnd, NppDarkMode::isEnabled());

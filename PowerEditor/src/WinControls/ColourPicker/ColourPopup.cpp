@@ -122,7 +122,6 @@ INT_PTR CALLBACK ColourPopup::run_dlgProc(UINT message, WPARAM wParam, LPARAM lP
 	case WM_DRAWITEM:
 	{
 		HBRUSH		hbrush;
-
 		DRAWITEMSTRUCT* pdis = (DRAWITEMSTRUCT*)lParam;
 		HDC hdc = pdis->hDC;
 		RECT rc = pdis->rcItem;
@@ -138,6 +137,7 @@ INT_PTR CALLBACK ColourPopup::run_dlgProc(UINT message, WPARAM wParam, LPARAM lP
 		case ODA_DRAWENTIRE:
 			switch (pdis->CtlID)
 			{
+			//This is what sets the color border to pink. 
 			case IDC_COLOUR_LIST:
 				rc = pdis->rcItem;
 				COLORREF cr = pdis->itemData;

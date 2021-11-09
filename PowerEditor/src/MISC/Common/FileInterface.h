@@ -57,11 +57,6 @@ public:
 	};
 
 private:
-	CFile(const CFile&) = delete;
-	CFile& operator=(const CFile&) = delete;
-
-	void fillCreateParams(DWORD &access, DWORD &share, DWORD &disp, DWORD &attrib);
-
 	HANDLE	_hFile		{INVALID_HANDLE_VALUE};
 	Mode	_hMode		{Mode::READ};
 	bool	_written	{false};

@@ -291,14 +291,14 @@ public:
 	bool isUnsync() const { return _isUnsync; }
 	void setUnsync(bool val) { _isUnsync = val; }
 
-	void startMonitoring() { 
-		_isMonitoringOn = true; 
+	void startMonitoring() {
+		_isMonitoringOn = true;
 		_eventHandle = ::CreateEvent(nullptr, TRUE, FALSE, nullptr);
 	};
 
 	HANDLE getMonitoringEvent() const { return _eventHandle; };
 
-	void stopMonitoring() { 
+	void stopMonitoring() {
 		_isMonitoringOn = false;
 		::SetEvent(_eventHandle);
 		::CloseHandle(_eventHandle);
@@ -334,11 +334,11 @@ private:
 
 	//document properties
 	Document _doc;	//invariable
-	LangType _lang;
+	LangType _lang = L_TEXT;
 	generic_string _userLangExt; // it's useful if only (_lang == L_USER)
 	bool _isDirty = false;
 	EolType _eolFormat = EolType::osdefault;
-	UniMode _unicodeMode;
+	UniMode _unicodeMode = uniUTF8;
 	int _encoding = -1;
 	bool _isUserReadOnly = false;
 	bool _needLexer = false; // new buffers do not need lexing, Scintilla takes care of that
@@ -349,7 +349,7 @@ private:
 	std::vector<std::vector<size_t>> _foldStates;
 
 	//Environment properties
-	DocFileStatus _currentStatus;
+	DocFileStatus _currentStatus = DOC_REGULAR;
 	FILETIME _timeStamp = {}; // 0 if it's a new doc
 
 	bool _isFileReadOnly = false;

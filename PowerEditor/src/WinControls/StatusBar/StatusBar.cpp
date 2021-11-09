@@ -42,6 +42,16 @@ StatusBar::~StatusBar()
 
 void StatusBar::init(HINSTANCE, HWND)
 {
+	// The call to winrt::init_apartment initializes COM; by default, in a multithreaded apartment.
+	winrt::init_apartment(apartment_type::single_threaded);
+
+	// Initialize the XAML framework's core window for the current thread.
+	WindowsXamlManager winxamlmanager = WindowsXamlManager::InitializeForCurrentThread();
+
+	// This DesktopWindowXamlSource is the object that enables a non-UWP desktop application 
+	// to host WinRT XAML controls in any UI element that is associated with a window handle (HWND).
+	_desktopWindowXamlSource = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+
 	assert(false and "should never be called");
 }
 

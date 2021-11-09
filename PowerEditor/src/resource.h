@@ -472,7 +472,6 @@
 // #define IDD_FIND_REPLACE_DLG        1600
 
 #define IDD_ABOUTBOX 1700
-#define IDC_LICENCE_EDIT 1701
 #define IDC_HOME_ADDR        1702
 #define IDC_EMAIL_ADDR        1703
 #define IDC_ONLINEHELP_ADDR 1704
